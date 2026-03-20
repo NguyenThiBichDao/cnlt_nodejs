@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<!-- Contact Section-->
+<section class="page-section" id="contact" style="padding-top: 150px; background-color: #212529;">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Liên hệ với chúng tôi</h2>
+            <h3 class="section-subheading text-muted">Vui lòng để lại thông tin, chúng tôi sẽ phản hồi sớm nhất.</h3>
+        </div>
+        <form id="contactForm">
+            <div class="row align-items-stretch mb-5">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input class="form-control" id="name" type="text" placeholder="Họ và tên *" required />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="email" type="email" placeholder="Email *" required />
+                    </div>
+                    <div class="form-group mb-md-0">
+                        <input class="form-control" id="phone" type="tel" placeholder="Số điện thoại *" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-textarea mb-md-0">
+                        <textarea class="form-control" id="message" placeholder="Lời nhắn *" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary btn-xl text-uppercase" type="submit">Gửi tin nhắn</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+
+<section class="page-section mt-5">
+    <div class="container text-center">
+        <h2 class="section-heading text-uppercase">Thông tin chi tiết</h2>
+        <div class="card mx-auto" style="width: 18rem;">
+            <img src="/assets/img/portfolio/<%= item.id %>.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><%= item.name %></h5>
+                <p class="card-text">ID: <%= item.id %></p>
+                <p>Trạng thái: 
+                    <% if(item.hot) { %> 
+                        <span class="badge bg-danger">ĐANG HOT 🔥</span> 
+                    <% } else { %> 
+                        Bình thường 
+                    <% } %>
+                </p>
+                <a href="/list" class="btn btn-secondary">Quay lại danh sách</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

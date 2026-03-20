@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+
+<section class="page-section bg-light" id="portfolio">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Danh sách địa điểm</h2>
+        </div>
+        <div class="row">
+            <% dsDiaDiem.forEach(function(item) { %>
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item text-center">
+                        <img class="img-fluid" src="/assets/img/portfolio/<%= item.id %>.jpg" alt="..." />
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading"><%= item.name %></div>
+                            <!-- Link sang trang chi tiết -->
+                            <a href="/detail/<%= item.id %>" class="btn btn-primary mt-2">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>
