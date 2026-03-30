@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Chi tiết bài viết</title>
+    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 <body>
-    <!-- Hiển thị tiêu đề bài viết -->
-    <h1><%= post.title %></h1>
+    <div class="post-card"> 
+        <h1><%= post.title %></h1>
+        <hr>
+        <div style="font-size: 1.1em; line-height: 1.8; color: #444;">
+            <%= post.body %>
+        </div>
+    </div>
     
-    <!-- Hiển thị nội dung chi tiết -->
-    <p><%= post.body %></p>
-    
-    <hr>
-    <!-- Link quay lại trang danh sách -->
-    <a href="/">Về trang chủ</a>
+    <br>
+    <a href="/" class="btn"> << Quay lại trang chủ</a>
 </body>
 </html>
