@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tạo bài viết</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+    <h1>Tạo bài viết mới</h1>
+
+    <div style="max-width: 500px; margin: auto;"> <!-- Gom nhóm lại cho đẹp -->
+        <form action="/blogposts/store" method="POST">
+            <label>Tiêu đề:</label>
+            <input type="text" name="title" placeholder="Nhập tiêu đề bài viết...">
+
+            <label>Nội dung:</label>
+            <textarea name="body" rows="8" placeholder="Viết nội dung tại đây..."></textarea>
+            
+            <button type="submit" class="btn">Lưu bài viết</button>
+            <a href="/" style="margin-left: 10px;">Hủy bỏ</a>
+        </form>
+    </div>
+</body>
+</html>

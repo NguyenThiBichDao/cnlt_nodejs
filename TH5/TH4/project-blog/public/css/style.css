@@ -1,0 +1,97 @@
+/* 1. Cấu hình chung cho toàn trang */
+body { 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+    line-height: 1.7; 
+    max-width: 850px; 
+    margin: 0 auto; 
+    padding: 40px 20px; 
+    background-color: #fffbeb; /* Màu nền xám xanh nhạt cực sang */
+    color: #1e293b; /* Màu chữ xanh đen dễ đọc */
+}
+
+/* 2. Tiêu đề chính */
+h1 { 
+    color: #0f172a; 
+    font-size: 2.5rem;
+    text-align: center; 
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+}
+
+/* 3. Đường link */
+a { 
+    text-decoration: none; 
+    color: #4f46e5; /* Màu Indigo hiện đại */
+    transition: all 0.2s ease; 
+}
+
+a:hover { 
+    color: #4338ca; 
+}
+
+/* 4. Nút bấm chung */
+.btn { 
+    display: inline-block; 
+    background: #4f46e5; 
+    color: #ffffff !important; 
+    padding: 10px 24px; 
+    border: none; 
+    border-radius: 8px; 
+    font-weight: 600;
+    cursor: pointer; 
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.btn:hover { 
+    background: #4338ca;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+/* 5. Khung bài viết (Post Card) */
+.post-card { 
+    background: #ffffff; 
+    padding: 30px; 
+    margin-bottom: 25px;
+    border-radius: 16px; 
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover { 
+    transform: scale(1.02); /* Hiệu ứng phóng to nhẹ khi di chuột */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: #4f46e5;
+}
+
+.post-card h2 {
+    margin-top: 0;
+    color: #1e293b;
+}
+
+/* 6. Form nhập liệu */
+input, textarea { 
+    width: 100%; 
+    padding: 14px; 
+    margin: 15px 0; 
+    border: 2px solid #e2e8f0; 
+    border-radius: 10px; 
+    box-sizing: border-box; 
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+    border-color: #4f46e5;
+}
+
+/* 7. Nút xóa (nếu bạn có làm thêm) */
+.btn-delete { 
+    background: #ef4444; 
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+}
