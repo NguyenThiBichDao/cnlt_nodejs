@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiết bài viết</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.title %> - Chi tiết</title>
     <link rel="stylesheet" href="/css/style.css">
-
 </head>
 <body>
-    <div class="post-card"> 
-        <h1><%= post.title %></h1>
-        <hr>
-        <div style="font-size: 1.1em; line-height: 1.8; color: #444;">
-            <%= post.body %>
-        </div>
+    <div class="container">
+        <a href="/" class="view-more">← Quay lại trang chủ</a>
+
+        <article class="post-detail-card"> 
+            <header class="post-header">
+                <h1 class="post-title"><%= post.title %></h1>
+                <div class="post-meta">
+                    <span>Đăng bởi: <strong>Admin</strong></span>
+                </div>
+            </header>
+
+            <hr class="divider">
+
+            <div class="post-content">
+                <%= post.body %>
+            </div>
+        </article>
     </div>
-    
-    <br>
-    <a href="/" class="btn"> << Quay lại trang chủ</a>
 </body>
 </html>

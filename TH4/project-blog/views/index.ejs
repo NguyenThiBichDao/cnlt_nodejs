@@ -1,30 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang chủ Blog</title>
-    <!-- Sửa đường dẫn vì style.css nằm trực tiếp trong public -->
     <link rel="stylesheet" href="/css/style.css">
-
 </head>
 <body>
-    <h1>Danh sách bài viết</h1>
-    <a href="/blogposts/new" class="btn"> + Tạo bài viết mới</a>
-    <hr>
-
-    <div class="post-list">
-        <% posts.forEach(post => { %>
-            <div class="post-card">
-                <a href="/blogposts/<%= post._id %>">
-                    <h2><%= post.title %></h2>
-                </a>
-                <p><%= post.body.substring(0, 100) %>...</p>
-                <div class="post-meta">
-                    <a href="/blogposts/<%= post._id %>">Xem chi tiết</a>
-                </div>
-            </div>
-        <% }) %>
+   <div class="container">
+    <h1>Blog Của Tôi</h1>
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a href="/blogposts/new" class="btn btn-primary">+ Viết bài mới</a>
     </div>
+    <div class="post-list">
+       <% posts.forEach(post => { %>
+    <article class="post-card">
+        <div class="post-card-content">
+            <a href="/blogposts/<%= post._id %>" class="post-link">
+                <!-- Đảm bảo post.title và post.body viết đúng tên trường trong Schema -->
+                <h2><%= post.title %></h2> 
+            </a>
+            <p class="post-excerpt">
+                <%= post.body ? post.body.substring(0, 150) : "Không có nội dung" %>...
+            </p>
+            <div class="post-footer">
+                <a href="/blogposts/<%= post._id %>" class="view-more">Đọc thêm →</a>
+            </div>
+        </div>
+    </article>
+<% }) %>
+    </div>
+</div>
 
 </body>
 </html>

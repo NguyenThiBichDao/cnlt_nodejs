@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Tạo bài viết</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo bài viết mới</title>
     <link rel="stylesheet" href="/css/style.css">
-
 </head>
 <body>
-    <h1>Tạo bài viết mới</h1>
-
-    <div style="max-width: 500px; margin: auto;"> <!-- Gom nhóm lại cho đẹp -->
-        <form action="/blogposts/store" method="POST">
-            <label>Tiêu đề:</label>
-            <input type="text" name="title" placeholder="Nhập tiêu đề bài viết...">
-
-            <label>Nội dung:</label>
-            <textarea name="body" rows="8" placeholder="Viết nội dung tại đây..."></textarea>
-            
-            <button type="submit" class="btn">Lưu bài viết</button>
-            <a href="/" style="margin-left: 10px;">Hủy bỏ</a>
-        </form>
+    <div class="container">
+        <div class="form-wrapper">
+            <h1>Tạo bài viết mới</h1>
+            <form action="/blogposts/store" method="POST">
+                <div class="form-group">
+                    <label>Tiêu đề bài viết</label>
+                    <input type="text" name="title" placeholder="Nhập tiêu đề..." required>
+                </div>
+                <div class="form-group">
+                    <label>Nội dung</label>
+                    <textarea name="body" rows="10" placeholder="Viết nội dung tại đây..." required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Lưu bài viết</button>
+                    <a href="/" class="btn-cancel">Hủy bỏ</a>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
