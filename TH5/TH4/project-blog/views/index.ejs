@@ -1,26 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Trang chủ Blog</title>
-    <!-- Sửa đường dẫn vì style.css nằm trực tiếp trong public -->
+    <title>Blog Cá Nhân</title>
     <link rel="stylesheet" href="/css/style.css">
-
 </head>
 <body>
-    <h1>Danh sách bài viết</h1>
-    <a href="/blogposts/new" class="btn"> + Tạo bài viết mới</a>
-    <hr>
 
+    <!-- PHẦN NÀY ĐỂ NGOÀI VÒNG LẶP (CHỈ XUẤT HIỆN 1 LẦN) -->
+    <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+    <h1>My Blog Post</h1>
+    <p style="color: #64748b; margin-bottom: 30px;">Chia sẻ những suy nghĩ và câu chuyện của bạn</p>
+    
+    <!-- Nút bấm nổi bật -->
+    <a href="/blogposts/new" class="btn-create">
+        <span style="margin-right: 8px; font-size: 1.2rem;">+</span> Viết bài mới ngay
+    </a>
+</div>
+
+    <!-- PHẦN DANH SÁCH BÀI VIẾT -->
     <div class="post-list">
         <% posts.forEach(post => { %>
             <div class="post-card">
-                <a href="/blogposts/<%= post._id %>">
-                    <h2><%= post.title %></h2>
-                </a>
-                <p><%= post.body.substring(0, 100) %>...</p>
-                <div class="post-meta">
-                    <a href="/blogposts/<%= post._id %>">Xem chi tiết</a>
+                <h2><%= post.title %></h2>
+                <p><%= post.body ? post.body.substring(0, 150) : "" %></p>
+                
+                <div class="post-meta" style="display: flex; gap: 20px; align-items: center; border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px;">
+                    <a href="/blogposts/<%= post._id %>" style="font-weight: 600; color: #4f46e5; text-decoration: none;">Xem chi tiết →</a>
+                    <a href="/post/edit/<%= post._id %>" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">Sửa</a>
+                    <a href="/post/delete/<%= post._id %>" onclick="return confirm('Xóa bài viết này?')" style="color: #ef4444; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Xóa</a>
                 </div>
             </div>
         <% }) %>

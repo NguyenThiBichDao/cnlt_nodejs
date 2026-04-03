@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa bài viết</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="form-container" style="margin-top: 50px;">
+        <h1>Chỉnh sửa bài viết</h1>
+        <form action="/post/update/<%= post._id %>" method="POST">
+            <div>
+                <label>Tiêu đề:</label>
+                <input type="text" name="title" value="<%= post.title %>" required>
+            </div>
+            <div>
+                <label>Nội dung:</label>
+                <textarea name="body" rows="10" required><%= post.body %></textarea>
+            </div>
+            <div style="display: flex; gap: 20px;">
+                <button type="submit" class="btn-create" style="flex: 2; border: none; cursor: pointer;">Cập nhật bài viết</button>
+                <a href="/" style="flex: 1; text-align: center; color: var(--text-muted); text-decoration: none; padding-top: 12px;">Hủy</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

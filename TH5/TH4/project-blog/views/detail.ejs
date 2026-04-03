@@ -1,21 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiết bài viết</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.title %> - Chi tiết bài viết</title>
+    <!-- Dấu / ở đầu cực kỳ quan trọng để nhận CSS trên mọi URL -->
     <link rel="stylesheet" href="/css/style.css">
-
+    <!-- Link Google Fonts chuẩn -->
+    <link href="https://googleapis.com" rel="stylesheet">
 </head>
-<body>
-    <div class="post-card"> 
-        <h1><%= post.title %></h1>
-        <hr>
-        <div style="font-size: 1.1em; line-height: 1.8; color: #444;">
+<body style="padding: 60px 20px;"> <!-- XÓA background-color ở đây để dùng nền chung từ CSS -->
+
+    <!-- Thêm class form-container để tự nhận màu trắng và bóng đổ từ file style.css -->
+    <div class="form-container" style="max-width: 800px; margin: 0 auto; padding: 60px;">
+        
+        <!-- Nút quay lại -->
+        <a href="/" style="text-decoration: none; color: #64748b; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; margin-bottom: 40px;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Quay lại trang chủ
+        </a>
+
+        <!-- Tiêu đề lớn -->
+        <h1 style="text-align: left; font-size: 3.5rem; font-weight: 800; color: #0f172a; margin: 0 0 20px 0; line-height: 1.1; letter-spacing: -0.05em;">
+            <%= post.title %>
+        </h1>
+        
+        <!-- Thanh thông tin (Metadata) -->
+        <div style="display: flex; align-items: center; gap: 15px; color: #94a3b8; font-size: 0.9rem; margin-bottom: 40px; border-bottom: 1px solid #f1f5f9; padding-bottom: 30px;">
+            <span style="background: #e0e7ff; color: #4338ca; padding: 5px 15px; border-radius: 30px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;">Bài viết</span>
+            <span>Đăng bởi <strong>Admin</strong></span>
+            <span style="color: #cbd5e1;">|</span>
+            <span>ID: <code><%= post._id %></code></span>
+        </div>
+
+        <!-- Nội dung bài viết chính -->
+        <div style="font-size: 1.3rem; line-height: 1.8; color: #334155; min-height: 250px; white-space: pre-wrap; font-family: 'Inter', sans-serif;">
             <%= post.body %>
         </div>
+
+        <!-- Thanh công cụ điều khiển -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 60px; padding-top: 30px; border-top: 2px solid #f8fafc;">
+            <a href="/post/edit/<%= post._id %>" style="color: #4f46e5; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Chỉnh sửa bài viết
+            </a>
+
+            <a href="/post/delete/<%= post._id %>" 
+               onclick="return confirm('Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa bài này?')" 
+               style="color: #ef4444; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                Xóa vĩnh viễn
+            </a>
+        </div>
     </div>
-    
-    <br>
-    <a href="/" class="btn"> << Quay lại trang chủ</a>
+
 </body>
 </html>
