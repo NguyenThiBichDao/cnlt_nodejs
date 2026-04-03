@@ -3,16 +3,23 @@
 <section class="page-section bg-light" id="portfolio">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Danh sách địa điểm</h2>
+            <!-- Đổi tiêu đề cho đồng bộ -->
+            <h2 class="section-heading text-uppercase">Danh sách sản phẩm</h2>
         </div>
         <div class="row">
-            <% dsDiaDiem.forEach(function(item) { %>
+            <!-- SỬA TẠI ĐÂY: Đổi dsDiaDiem thành dsSanPham -->
+            <% dsSanPham.forEach(function(item) { %>
                 <div class="col-lg-4 col-sm-6 mb-4">
                     <div class="portfolio-item text-center">
-                        <img class="img-fluid" src="/assets/img/portfolio/<%= item.id %>.jpg" alt="..." />
+                        <img class="img-fluid" src="/assets/img/portfolio/<%= item.id %>.jpg" alt="<%= item.name %>" onerror="this.src='/assets/img/portfolio/1.jpg'" />
                         <div class="portfolio-caption">
-                            <div class="portfolio-caption-heading"><%= item.name %></div>
-                            <!-- Link sang trang chi tiết -->
+                            <div class="portfolio-caption-heading">
+                                <%= item.name %>
+                                <% if (item.hot) { %>
+                                    <span class="badge bg-danger" style="font-size: 0.5em; vertical-align: middle;">HOT</span>
+                                <% } %>
+                            </div>
+                            <!-- Link sang trang chi tiết động -->
                             <a href="/detail/<%= item.id %>" class="btn btn-primary mt-2">Xem chi tiết</a>
                         </div>
                     </div>
