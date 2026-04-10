@@ -1,0 +1,135 @@
+/* 1. Khai báo biến màu sắc */
+:root {
+    --primary: #2196F3;
+    --dark: #333;
+    --light: #f4f4f9;
+    --success: #4CAF50;
+    --warning: #fffbe6;
+}
+
+/* 2. Định dạng cơ bản */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light);
+    color: var(--dark);
+}
+
+/* 3. Container bao quanh nội dung */
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+/* 4. Menu điều hướng */
+nav {
+    background: var(--dark);
+    padding: 12px 0;
+    text-align: center;
+    margin-bottom: 25px;
+    border-radius: 5px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+/* 5. Tiêu đề */
+h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+h3 {
+    color: var(--dark);
+    margin-top: 25px;
+}
+
+/* 6. Form và Input */
+textarea, input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+/* 7. Nút bấm và hiệu ứng Hover */
+button, input[type="submit"] {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s;
+}
+
+button:hover, input[type="submit"]:hover {
+    background: #1976D2;
+    transform: translateY(-2px); /* Hiệu ứng nổi lên khi di chuột */
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* 8. Các khung hiển thị dữ liệu (Box) */
+.box {
+    background: #fafafa;
+    border-left: 5px solid var(--primary);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 3px;
+}
+
+/* 9. Làm đẹp khung hiển thị Nhật ký (Iframe) */
+iframe {
+    width: 100%;
+    height: 150px;
+    background-color: var(--warning); /* Màu giấy vàng nhạt */
+    border: 1px solid #ffe58f;
+    border-radius: 8px;
+    padding: 5px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+/* 10. Định dạng khung Request (JSON) */
+pre {
+    background: #272822;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+/* 11. Định dạng Hình ảnh */
+img {
+    display: block;
+    margin: 25px auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}

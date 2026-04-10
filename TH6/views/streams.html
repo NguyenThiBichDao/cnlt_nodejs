@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhật Ký Hành Trình</title>
+    <!-- Kết nối file CSS đã sửa ở bước trước -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>✍️ Nhật Ký Hành Trình</h1>
+        
+        <nav>
+            <a href="/">Trang Chủ</a> | 
+            <a href="/events">Khám Phá</a> | 
+            <a href="/request">Thông Tin</a> | 
+            <a href="/streams">Nhật Ký</a>
+        </nav>
+
+        <section class="box">
+            <h3>1. Readable: Đọc bài viết từ Server</h3>
+            <p><small><i>Dữ liệu được đọc bằng <b>fs.createReadStream()</b> từ file story.txt</i></small></p>
+            <!-- Iframe hiển thị nội dung nhật ký -->
+            <iframe src="/read-story"></iframe>
+        </section>
+
+        <section class="box" style="border-left-color: #ff9800;">
+            <h3>2 & 3. Writable & Transform: Thêm cảm nghĩ mới</h3>
+            <p>Nội dung sẽ được <b>Transform</b> thành chữ HOA trước khi ghi vào file.</p>
+            <form method="POST" action="/streams">
+                <textarea name="content" rows="4" placeholder="Viết gì đó về chuyến đi..." required></textarea>
+                <button type="submit" style="background: #ff9800;">Ghi vào Nhật Ký (Pipe to File)</button>
+            </form>
+        </section>
+
+        <section class="box" style="border-left-color: #4CAF50;">
+            <h3>4. Duplex: Echo Messenger</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="echoInput" placeholder="Nhắn tin cho Server...">
+                <button onclick="sendEcho()" style="background: #4CAF50;">Gửi (Duplex)</button>
+            </div>
+            <p id="echoResponse" style="color: #2e7d32; font-weight: bold; margin-top: 10px;"></p>
+        </section>
+
+        <section class="box">
+            <h3>🖼️ Ảnh Hành Trình (Stream Image)</h3>
+            <img src="/image" alt="Travel Image">
+        </section>
+    </div>
+
+    <script>
+        function sendEcho() {
+            const input = document.getElementById('echoInput');
+            const response = document.getElementById('echoResponse');
+            
+            if(!input.value) return;
+
+            fetch('/echo', {
+                method: 'POST',
+                body: input.value
+            })
+            .then(res => res.text())
+            .then(data => {
+                response.innerText = data;
+                input.value = ''; // Xóa nội dung sau khi gửi
+            });
+        }
+    </script>
+</body>
+</html>

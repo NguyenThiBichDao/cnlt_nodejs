@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông Tin Request - NodeJS</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>👤 Thông Tin Request & Header</h1>
+        
+        <nav>
+            <a href="/">Trang Chủ</a> | 
+            <a href="/events">Khám Phá</a> | 
+            <a href="/request">Thông Tin</a> | 
+            <a href="/streams">Nhật Ký</a>
+        </nav>
+
+        <section class="box">
+            <h3>🔍 Phân tích Request</h3>
+            <p>Dữ liệu dưới đây được lấy trực tiếp từ đối tượng <code>req</code> của NodeJS Server:</p>
+            <div id="loading">Đang lấy dữ liệu từ server...</div>
+            <pre id="request-data" style="display: none;"></pre>
+        </section>
+
+        <section class="box" style="border-left-color: #4CAF50;">
+            <h3>💡 Giải thích kỹ thuật</h3>
+            <ul>
+                <li><b>Method:</b> Phương thức HTTP (GET, POST...).</li>
+                <li><b>URL & Query:</b> Đường dẫn và các tham số truyền trên URL.</li>
+                <li><b>Headers:</b> Thông tin trình duyệt, hệ điều hành và các thiết lập kết nối.</li>
+            </ul>
+        </section>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/request?name=SinhVien&action=LearnNodeJS">
+                <button>Thử thêm Query Parameter vào URL</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Gọi tới endpoint /json trong index.js để lấy dữ liệu
+        fetch('/json' + window.location.search)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                const display = document.getElementById('request-data');
+                display.style.display = 'block';
+                display.textContent = JSON.stringify(data, null, 4);
+            })
+            .catch(err => {
+                document.getElementById('loading').innerText = 'Lỗi khi tải dữ liệu!';
+            });
+    </script>
+</body>
+</html>
