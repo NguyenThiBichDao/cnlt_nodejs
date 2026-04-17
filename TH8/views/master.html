@@ -1,0 +1,16 @@
+  <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài Thực Hành 8 - Upload File</title>
+</head>
+<body>
+    <h2>Tạo Giao Diện Upload File</h2>
+    <!-- Quan trọng: name="myFile" phải khớp với code trong server.js -->
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="myFile" />
+        <br><br>
+        <button type="submit">Tải file lên</button>
+    </form>
+</body>
+</html>
