@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZippyChat</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+    <div id="login-screen">
+        <h2>Tham gia phòng chat</h2>
+
+        <div class="input-group-login">
+            <input type="text" id="username" placeholder="Nhập tên của bạn...">
+            <button onclick="login()">Tham gia</button>
+        </div>
+    </div>
+
+    <!-- CHAT SCREEN -->
+    <div id="chat-screen" style="display:none;">
+
+        <!-- KHUNG TỔNG -->
+        <div class="main-wrapper">
+
+            <!-- THANH CHÀO -->
+            <div id="welcome-msg">
+                ✨ Chào bạn, chúc bạn trò chuyện vui vẻ! ✨
+            </div>
+
+            <!-- KHUNG CHAT -->
+            <div class="container">
+
+                <!-- SIDEBAR -->
+                <div class="user-list">
+
+                    <h3>Đang online</h3>
+
+                    <input 
+                        type="text"
+                        id="search-user"
+                        placeholder="🔍 Tìm bạn bè..."
+                        oninput="filterUsers()"
+                    >
+
+                    <ul id="users"></ul>
+
+                </div>
+
+                <!-- CHAT AREA -->
+                <div class="chat-area">
+
+                    <!-- HEADER -->
+                    <div class="chat-header">
+                        <h3 id="chat-with">Chọn một người để chat</h3>
+                         <small id="typing-status" style="color: #ff6b81; font-style: italic;"></small>
+
+                        <small id="typing-status"></small>
+                    </div>
+
+                    <!-- TIN NHẮN -->
+                    <div id="messages"></div>
+
+                    <!-- INPUT -->
+                    <div class="input-group">
+
+                        <!-- BUTTON STICKER -->
+                        <button class="btn-icon" onclick="toggleStickers()">
+                            😊
+                        </button>
+
+                        <!-- STICKER PANEL -->
+                        <div id="sticker-panel" class="sticker-panel" style="display:none;">
+
+                            <span onclick="sendSticker('😍')">😍</span>
+                            <span onclick="sendSticker('😂')">😂</span>
+                            <span onclick="sendSticker('🥰')">🥰</span>
+                            <span onclick="sendSticker('👍')">👍</span>
+                            <span onclick="sendSticker('🔥')">🔥</span>
+                            <span onclick="sendSticker('🎉')">🎉</span>
+
+                        </div>
+
+                        <!-- BUTTON IMAGE -->
+                        <label for="file-input" class="btn-image">
+                            📷
+                        </label>
+
+                        <input
+                            type="file"
+                            id="file-input"
+                            onchange="sendFile()"
+                            accept="image/*"
+                            style="display:none"
+                        >
+
+                        <!-- INPUT MESSAGE -->
+                        <input
+                            type="text"
+                            id="msg-input"
+                            placeholder="Nhập nội dung tin nhắn..."
+                        >
+
+                        <!-- SEND -->
+                        <button class="btn-send" onclick="sendMessage()">
+                            Gửi
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="script.js"></script>
+
+    <script>
+        // Enter gửi tin nhắn
+        document.getElementById("msg-input")
+            .addEventListener("keypress", (e) => {
+                if (e.key === "Enter") sendMessage();
+            });
+
+        // Enter đăng nhập
+        document.getElementById("username")
+            .addEventListener("keypress", (e) => {
+                if (e.key === "Enter") login();
+            });
+    </script>
+
+</body>
+</html>
