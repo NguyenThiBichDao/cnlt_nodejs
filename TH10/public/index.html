@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Realtime - Bài Kiểm Tra</title>
+    <!-- Nhận file CSS để làm đẹp giao diện -->
+    <link rel="stylesheet" href="style.css"> 
+    <!-- Thư viện Socket.IO (Server sẽ tự cung cấp file này) -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+    <!-- Màn hình đăng nhập ban đầu -->
+    <div id="login-screen">
+        <h2>Tham gia phòng chat</h2>
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Nhập tên của bạn...">
+            <button onclick="login()">Tham gia</button>
+        </div>
+    </div>
+
+    <!-- Màn hình Chat (ẩn lúc mới vào, hiện sau khi đăng nhập) -->
+    <div id="chat-screen" style="display:none;">
+        <div class="container">
+            <!-- Sidebar: Danh sách user online bên trái -->
+            <div class="user-list">
+                <h3>Đang online</h3>
+                <ul id="users"></ul>
+            </div>
+            
+            <!-- Khu vực chat chính bên phải -->
+            <div class="chat-area">
+                <div class="chat-header">
+                    <h3 id="chat-with">Chọn một người để chat</h3>
+                </div>
+                
+                <div id="messages">
+                    <!-- Tin nhắn sẽ hiển thị ở đây -->
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="msg-input" placeholder="Nhập nội dung tin nhắn...">
+                    <button onclick="sendMessage()">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gọi file xử lý logic JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Thêm tính năng nhấn phím Enter để gửi cho tiện bạn nhé
+        document.getElementById("msg-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+        
+        document.getElementById("username").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>

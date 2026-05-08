@@ -1,0 +1,199 @@
+/* 1. NỀN CHUYỂN MÀU KẸO NGỌT (CANDY GRADIENT) */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Dải màu: Hồng phấn - Xanh Mint - Tím nhạt - Vàng kem */
+    background: linear-gradient(-45deg, #ffc0cb, #e0fcf5, #f3e5f5, #fff9c4);
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 2. KHUNG ĐĂNG NHẬP (DỄ THƯƠNG) */
+#login-screen {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px); /* Hiệu ứng kính mờ */
+    padding: 50px 40px;
+    border-radius: 30px; /* Bo góc cực tròn */
+    box-shadow: 0 15px 30px rgba(255, 182, 193, 0.3);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+#login-screen h2 {
+    margin-bottom: 30px;
+    color: #ff6b81; /* Màu hồng đậm kẹo */
+    font-weight: 800;
+}
+
+#login-screen input {
+    padding: 15px;
+    border: 2px solid #ffebee;
+    border-radius: 20px;
+    outline: none;
+    font-size: 1rem;
+    background: #fffafa;
+}
+
+#login-screen button {
+    padding: 15px;
+    background: #ff6b81; /* Nút hồng rực rỡ */
+    color: white;
+    border-radius: 20px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#login-screen button:hover {
+    background: #ff4757;
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+/* 3. BỐ CỤC KHUNG CHAT */
+.container {
+    display: flex;
+    width: 950px;
+    height: 85vh;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.user-list {
+    width: 280px;
+    background: #fff9fb;
+    border-right: 1px solid #ffebee;
+}
+
+.user-list h3 {
+    padding: 24px;
+    margin: 0;
+    color: #ff6b81;
+    background: white;
+    border-bottom: 1px solid #ffebee;
+}
+
+.user-list li {
+    padding: 12px 20px;
+    margin: 8px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: #ff8fa3;
+    font-weight: 600;
+    transition: 0.2s;
+    background: white;
+    border: 1px solid #fff0f3;
+}
+
+.user-list li:hover {
+    background: #ffeef2;
+    transform: translateX(5px);
+}
+
+/* 4. TIN NHẮN & KHUNG CHAT */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 18px 25px;
+    border-bottom: 1px solid #ffebee;
+    color: #ff6b81;
+    font-weight: 800;
+}
+
+#messages {
+    flex: 1;
+    padding: 25px;
+    background: #ffffff;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+}
+
+.message-wrapper.sent {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+.message-wrapper.received {
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+.bubble {
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+/* Tin nhắn Bạn gửi - Hồng kẹo ngọt */
+.sent .bubble {
+    background: #ffafbd; /* Gradient nhẹ hồng */
+    background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* Tin nhắn nhận về - Xanh Mint nhẹ */
+.received .bubble {
+    background: #e0fcf5;
+    color: #2d3436;
+    border-bottom-left-radius: 4px;
+}
+
+.time {
+    font-size: 0.7rem;
+    color: #fab1a0;
+    margin-top: 5px;
+}
+
+/* 5. INPUT CHAT */
+.input-group {
+    padding: 20px 25px;
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid #ffebee;
+}
+
+#msg-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #ffebee;
+    border-radius: 25px;
+    outline: none;
+    background: #fffafa;
+}
+
+#chat-screen button {
+    background: #ff6b81;
+    color: white;
+    padding: 0 25px;
+    border-radius: 25px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
