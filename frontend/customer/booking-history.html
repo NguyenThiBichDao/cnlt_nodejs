@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Sử Đặt Xe - E-BIKES</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --text-muted: #64748b;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #f4f7fa; 
+            margin: 0; 
+            color: #1e293b; 
+        }
+
+        .navbar { 
+            background: rgba(15, 23, 42, 0.95); 
+            backdrop-filter: blur(10px);
+            color: white; 
+            padding: 15px 6%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .logo span { color: var(--primary-orange); }
+
+        .nav-links a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            margin: 0 15px; 
+            font-size: 14px; 
+            font-weight: 600;
+        }
+        
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-orange);
+        }
+
+        .user-menu { position: relative; }
+        .user-dropdown-btn {
+            font-weight: 600;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-family: inherit;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            color: #1e293b;
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 1001;
+        }
+        
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .dropdown-menu a:hover { background: #f1f5f9; color: var(--primary-orange); }
+        .dropdown-menu .logout-item { color: #e74c3c; border-top: 1px solid #f1f5f9; }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--bg-dark);
+            margin-bottom: 30px;
+        }
+
+        .booking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .booking-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            gap: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .booking-img {
+            width: 120px;
+            height: 90px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .booking-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .booking-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .booking-id {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .booking-status {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-approved { background: #d1fae5; color: #059669; }
+        .status-ongoing { background: #dbeafe; color: #2563eb; }
+        .status-completed { background: #e2e8f0; color: #475569; }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+
+        .booking-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin: 0 0 8px 0;
+        }
+
+        .booking-details {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .booking-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .booking-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-orange);
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-cancel, .btn-pay {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cancel {
+            background: white;
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .btn-cancel:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-pay {
+            background: var(--primary-orange);
+            color: white;
+        }
+
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ff6b35 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="home.html" class="logo">E-<span>BIKES</span></a>
+        <div class="nav-links">
+            <a href="home.html">Trang Chủ</a>
+            <a href="bikes.html">Danh Sách Xe</a>
+            <a href="booking-history.html" class="active">Lịch Sử Đặt Xe</a>
+        </div>
+        <div class="user-menu">
+            <button class="user-dropdown-btn" id="userDropdownBtn">
+                👤 <span id="userDisplayName">Khách Hàng</span> ▾
+            </button>
+            <div class="dropdown-menu" id="userDropdown">
+                <a href="#" class="logout-item" id="btnLogout">🚪 Đăng xuất</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <h1 class="page-title">📋 Lịch Sử Đặt Xe Của Bạn</h1>
+        
+        <div class="booking-list" id="bookingList">
+            <div class="empty-state">
+                <div class="empty-state-icon">⏳</div>
+                <p>Đang tải danh sách đơn thuê...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        (function() {
+            if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('role', 'customer');
+                localStorage.setItem('token', 'mock_token_123456');
+                localStorage.setItem('user', JSON.stringify({ ho_ten: 'Bich Dao', email: 'bichdaon639@gmail.com' }));
+            }
+
+            const userBtn = document.getElementById("userDropdownBtn");
+            const dropdown = document.getElementById("userDropdown");
+            const displayName = document.getElementById("userDisplayName");
+            const btnLogout = document.getElementById("btnLogout");
+
+            const userString = localStorage.getItem("user");
+            if (userString) {
+                try {
+                    const userData = JSON.parse(userString);
+                    const name = userData.ho_ten || userData.email || "Khách Hàng";
+                    if (displayName) displayName.textContent = name;
+                } catch (e) {}
+            }
+
+            if (userBtn && dropdown) {
+                userBtn.addEventListener("click", e => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle("show");
+                });
+                window.addEventListener("click", e => {
+                    if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.remove("show");
+                    }
+                });
+            }
+
+            if (btnLogout) {
+                btnLogout.addEventListener("click", e => {
+                    e.preventDefault();
+                    if (confirm("Bạn muốn đăng xuất khỏi hệ thống?")) {
+                        localStorage.clear();
+                        window.location.href = "../auth/login.html";
+                    }
+                });
+            }
+        })();
+
+        function renderStatus(status) {
+            const map = {
+                pending: 'Chờ duyệt',
+                approved: 'Đã duyệt',
+                ongoing: 'Đang thuê',
+                completed: 'Hoàn tất',
+                cancelled: 'Đã hủy'
+            };
+            return map[status] || status;
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                pending: 'status-pending',
+                approved: 'status-approved',
+                ongoing: 'status-ongoing',
+                completed: 'status-completed',
+                cancelled: 'status-cancelled'
+            };
+            return map[status] || '';
+        }
+
+        async function loadBookingHistory() {
+            const bookingList = document.getElementById("bookingList");
+            const res = await apiFetch('/rentals');
+
+            if (!res.success) {
+                bookingList.innerHTML = `<div class="empty-state"><p style="color: #dc2626;">❌ ${res.message || 'Không thể tải lịch sử đặt xe'}</p></div>`;
+                return;
+            }
+
+            const rentals = res.data || [];
+            const serverUrl = "http://localhost:5000";
+
+            if (rentals.length === 0) {
+                bookingList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏍️</div>
+                        <h3>Chưa có đơn đặt xe nào</h3>
+                        <p>Hãy khám phá những chiếc xe tuyệt vời của chúng tôi!</p>
+                        <a href="bikes.html" class="btn-primary">Xem Danh Sách Xe Ngay</a>
+                    </div>
+                `;
+                return;
+            }
+
+            bookingList.innerHTML = rentals.map(rental => {
+                const bike = rental.id_xe || {};
+                const imgUrl = bike.duong_dan_anh 
+                    ? (bike.duong_dan_anh.startsWith('http') ? bike.duong_dan_anh : `${serverUrl}${bike.duong_dan_anh}`)
+                    : 'https://via.placeholder.com/120x90?text=No+Image';
+                
+                const startDate = rental.ngay_bat_dau ? new Date(rental.ngay_bat_dau).toLocaleDateString('vi-VN') : '-';
+                const endDate = rental.ngay_du_kien_tra ? new Date(rental.ngay_du_kien_tra).toLocaleDateString('vi-VN') : '-';
+                const canCancel = rental.trang_thai_don === 'pending';
+                const canPay = rental.trang_thai_thanh_toan === 'unpaid' && rental.trang_thai_don === 'approved';
+
+                return `
+                    <div class="booking-card">
+                        <div class="booking-img">
+                            <img src="${imgUrl}" alt="${bike.ten_xe || 'Xe máy'}">
+                        </div>
+                        <div class="booking-info">
+                            <div>
+                                <div class="booking-header">
+                                    <span class="booking-id">Mã đơn: ${rental._id?.substring(0, 8) || '---'}</span>
+                                    <span class="booking-status ${getStatusClass(rental.trang_thai_don)}">${renderStatus(rental.trang_thai_don)}</span>
+                                </div>
+                                <h3 class="booking-title">${bike.ten_xe || 'Xe không xác định'}</h3>
+                                <div class="booking-details">
+                                    <span class="booking-detail-item">📅 ${startDate} - ${endDate}</span>
+                                    <span class="booking-detail-item">💰 ${rental.tong_tien_thue?.toLocaleString('vi-VN') || 0} đ</span>
+                                    <span class="booking-detail-item" style="color: ${rental.trang_thai_thanh_toan === 'paid' ? '#16a34a' : '#dc2626'}">
+                                        ${rental.trang_thai_thanh_toan === 'paid' ? '✓ Đã thanh toán' : '✗ Chưa thanh toán'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="booking-actions">
+                                ${canCancel ? `<button class="btn-cancel" onclick="cancelBooking('${rental._id}')">Hủy đơn</button>` : ''}
+                                ${canPay ? `<button class="btn-pay" onclick="payBooking('${rental._id}', ${rental.tong_tien_thue})">Thanh toán</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.cancelBooking = async (rentalId) => {
+            if (!confirm('Bạn có chắc muốn hủy đơn thuê xe này?')) return;
+            
+            const res = await apiFetch(`/rentals/${rentalId}`, {
+                method: 'DELETE'
+            });
+
+            if (res.success) {
+                alert('✅ Đã hủy đơn thành công!');
+                loadBookingHistory();
+            } else {
+                alert('❌ ' + (res.message || 'Hủy đơn thất bại'));
+            }
+        };
+
+        window.payBooking = async (rentalId, amount) => {
+            const paymentMethod = prompt('Chọn phương thị thanh toán:\n1. Momo\n2. VNPay\n3. Chuyển khoản', 'Chuyển khoản');
+            
+            if (!paymentMethod) return;
+
+            const res = await apiFetch('/payments', {
+                method: 'POST',
+                body: {
+                    id_don_thue: rentalId,
+                    so_tien_thanh_toan: amount,
+                    phuong_thuc_thanh_toan: paymentMethod,
+                    ma_giao_dich_ngan_hang: 'TXN' + Date.now()
+                }
+            });
+
+            if (res.success) {
+                alert('✅ Thanh toán thành công! Cảm ơn bạn đã sử dụng dịch vụ.');
+                loadBookingHistory();
+            } else {
+                alert('❌ ' + (res.message || 'Thanh toán thất bại'));
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", loadBookingHistory);
+    </script>
+</body>
+</html>

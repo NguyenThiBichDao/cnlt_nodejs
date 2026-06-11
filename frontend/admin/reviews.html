@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đánh Giá - Admin</title>
+    <script src="../js/check-auth.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --star-color: #fbbf24;
+        }
+
+        .reviews-table-container {
+            background: white;
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .review-stars {
+            color: var(--star-color);
+            font-size: 16px;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filters input, .filters select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="sidebarMenu"></aside>
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>QUẢN LÝ ĐÁNH GIÁ KHÁCH HÀNG</h1>
+                <p>Xem và quản lý các đánh giá về xe máy</p>
+            </header>
+
+            <div class="filters">
+                <input type="text" id="searchBike" placeholder="Tìm theo tên xe...">
+                <select id="filterRating">
+                    <option value="">Tất cả sao</option>
+                    <option value="5">5 sao</option>
+                    <option value="4">4 sao</option>
+                    <option value="3">3 sao</option>
+                    <option value="2">2 sao</option>
+                    <option value="1">1 sao</option>
+                </select>
+                <button onclick="loadReviews()" class="btn-action primary">Làm mới</button>
+            </div>
+
+            <div class="reviews-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Khách hàng</th>
+                            <th>Xe</th>
+                            <th>Số sao</th>
+                            <th>Bình luận</th>
+                            <th>Ngày đánh giá</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar-loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadReviews);
+
+        async function loadReviews() {
+            const tableBody = document.getElementById('reviewsTableBody');
+            const res = await apiFetch('/reviews');
+
+            if (!res.success) {
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #dc2626;">${res.message || 'Lỗi tải dữ liệu!'}</td></tr>`;
+                return;
+            }
+
+            const reviews = res.data || [];
+            
+            if (reviews.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Chưa có đánh giá nào.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = reviews.map(r => {
+                const customer = r.id_khach_hang            }).map(r => {
+                const customer = r.id_khach_hang || {};
+                const bike = r.id_xe || {};
+                const stars = "★".repeat(r.so_sao_danh_gia || 0);
+                const date = r.ngay_danh_gia ? new Date(r.ngay_danh_gia).toLocaleDateString('vi-VN') : '-';
+                const customerName = customer.ho_ten || customer.email || 'Khách hàng';
+                const bikeName = bike.ten_xe || 'Xe máy';
+
+                return `
+                    <tr>
+                        <td><strong>${customerName}</strong></td>
+                        <td>${bikeName}</td>
+                        <td class="review-stars">${stars}</td>
+                        <td>${r.noi_dung_binh_luan || ''}</td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteReview('${r._id}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        window.deleteReview = async (reviewId) => {
+            if (!confirm('Bạn có chắn muốn xóa đánh giá này?')) return;
+
+            const res = await apiFetch(`/reviews/${reviewId}`, { method: 'DELETE' });
+            if (res.success) {
+                alert('✅ Đã xóa đánh giá!');
+                loadReviews();
+            } else {
+                alert('❌ ' + (res.message || 'Xóa thất bại'));
+            }
+        };
+    </script>
+</body>
+</html>

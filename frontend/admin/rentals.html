@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Duyệt Đơn Thuê - Admin</title>
+    <script src="../js/check-auth.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="sidebarMenu"></aside>
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>KIỂM DUYỆT YÊU CẦU ĐẶT XE</h1>
+                <p>Phê duyệt hoặc hủy lịch trình thuê xe máy của thành viên</p>
+            </header>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead><tr><th>Khách Hàng</th><th>Xe Đăng Ký</th><th>Ngày Nhận</th><th>Ngày Trả</th><th>Trạng Thái</th><th>Hành Động</th></tr></thead>
+                    <tbody id="adminRentalTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="../js/api.js"></script><script src="../js/sidebar-loader.js"></script><script src="../js/admin-rentals.js"></script>
+</body>
+</html>

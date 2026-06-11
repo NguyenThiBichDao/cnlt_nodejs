@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đánh Giá Dịch Vụ - E-BIKES</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --bg-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --star-color: #ffb800;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f4f7fa;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 15px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--primary-orange); }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; }
+
+        .user-menu { position: relative; }
+        .user-dropdown-btn {
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            color: white;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            color: #1e293b;
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 1001;
+        }
+
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a:hover { background: #f1f5f9; color: var(--primary-orange); }
+
+        .reviews-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--bg-dark);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .rating-box {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.01);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .rating-num {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--bg-dark);
+            margin: 0;
+        }
+
+        .stars-display {
+            color: var(--star-color);
+            font-size: 20px;
+            margin: 8px 0;
+        }
+
+        .form-box {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.01);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--bg-dark);
+        }
+
+        .star-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .star-selector input[type="radio"] {
+            display: none;
+        }
+
+        .star-selector label {
+            font-size: 28px;
+            cursor: pointer;
+            color: #e2e8f0;
+        }
+
+        .star-selector input:checked ~ label,
+        .star-selector label:hover,
+        .star-selector label:hover ~ label {
+            color: var(--star-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: none;
+            background: #f8fafc;
+        }
+
+        textarea:focus {
+            border-color: var(--primary-orange);
+            background: white;
+            outline: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--bg-dark);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-orange);
+        }
+
+        .comment-list {
+            margin-top: 30px;
+        }
+
+        .comment-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--bg-dark);
+            margin: 0;
+        }
+
+        .comment-stars {
+            color: var(--star-color);
+            font-size: 14px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="logo">E-<span>BIKES</span></a>
+    <div class="nav-links">
+        <a href="home.html">Trang Chủ</a> 
+        <a href="bikes.html">Danh Sách Xe</a> 
+        <a href="booking-history.html">📋 Lịch sử đặt xe</a>
+        <a href="reviews.html" class="active">⭐ Đánh giá</a>
+    </div>
+    <div class="user-menu">
+        <button class="user-dropdown-btn" id="userDropdownBtn">
+            👤 <span id="userDisplayName">Khách Hàng</span> ▾
+        </button>
+        <div class="dropdown-menu" id="userDropdown">
+            <a href="#" id="btnLogout">🚪 Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="reviews-container">
+    <h1 class="page-title">⭐ Đánh Giá Dịch Vụ</h1>
+
+    <div class="rating-box">
+        <h3 class="rating-num" id="average-rating">0.0</h3>
+        <div class="stars-display" id="average-stars">Chưa có đánh giá</div>
+        <p style="font-size: 13px; color: var(--text-muted);">Dựa trên <span id="total-reviews">0</span> lượt đánh giá</p>
+    </div>
+
+    <div class="form-box">
+        <h3 style="margin-top: 0; color: var(--bg-dark);">Gửi đánh giá của bạn</h3>
+        
+        <div class="form-group">
+            <label>Chọn xe đã thuê *</label>
+            <select id="bikeSelect" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                <option value="">-- Chọn xe từ lịch sử thuê --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Xếp hạng sao *</label>
+            <div class="star-selector" id="starSelector">
+                <input type="radio" name="rating" id="star5" value="5"><label for="star5">★</label>
+                <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+                <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+                <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+                <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="reviewContent">Nội dung bình luận</label>
+            <textarea id="reviewContent" placeholder="Chia sẻ trải nghiệm của bạn về xe và dịch vụ..."></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="submitReview()">GỬI ĐÁNH GIÁ</button>
+    </form>
+</div>
+
+<div class="comment-list" id="commentList"></div>
+
+<script src="../js/api.js"></script>
+<script>
+(function() {
+    if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('role', 'customer');
+        localStorage.setItem('token', 'mock_token_123456');
+        localStorage.setItem('user', JSON.stringify({ ho_ten: 'Khách Hàng', email: 'customer@email.com', _id: 'user123' }));
+    }
+
+    const userBtn = document.getElementById("userDropdownBtn");
+    const dropdown = document.getElementById("userDropdown");
+    const displayName = document.getElementById("userDisplayName");
+    const btnLogout = document.getElementById("btnLogout");
+
+    const userString = localStorage.getItem("user");
+    if (userString) {
+        try {
+            const userData = JSON.parse(userString);
+            const name = userData.ho_ten || userData.email || "Khách Hàng";
+            if (displayName) displayName.textContent = name;
+        } catch (e) {}
+    }
+
+    if (userBtn && dropdown) {
+        userBtn.addEventListener("click", e => {
+            e.stopPropagation();
+            dropdown.classList.toggle("show");
+        });
+        window.addEventListener("click", e => {
+            if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+    }
+
+    if (btnLogout) {
+        btnLogout.addEventListener("click", e => {
+            e.preventDefault();
+            if (confirm("Bạn muốn đăng xuất?")) {
+                localStorage.clear();
+                window.location.href = "../auth/login.html";
+            }
+        });
+    }
+
+    loadCompletedRentals();
+})();
+
+async function loadCompletedRentals() {
+    const bikeSelect = document.getElementById("bikeSelect");
+    const res = await apiFetch('/rentals');
+    
+    if (res.success && res.data) {
+        const completed = res.data.filter(r => 
+            r.trang_thai_don === 'completed' || r.trang_thai_don === 'approved'
+        );
+        
+        bikeSelect.innerHTML = '<option value="">-- Chọn xe đã thuê --</option>' + 
+            completed.map(r => {
+                const bike = r.id_xe || {};
+                return `<option value="${r.id_xe?._id || r.id_xe}">${bike.ten_xe || 'Xe'} (${bike.bien_so_xe || ''})</option>`;
+            }).join('');
+    } else {
+        bikeSelect.innerHTML = '<option value="">-- Không tải được danh sách xe --</option>';
+    }
+}
+
+async function loadReviews() {
+    const bikeSelect = document.getElementById("bikeSelect");
+    const bikeId = bikeSelect.value;
+    
+    if (!bikeId) return;
+    
+    const res = await apiFetch(`/reviews/bike/${bikeId}`);
+    renderReviews(res.data || []);
+}
+
+function renderReviews(reviews) {
+    const list = document.getElementById("commentList");
+    const total = reviews.length;
+    
+    document.getElementById("total-reviews").textContent = total;
+    
+    if (total === 0) {
+        list.innerHTML = '<p class="empty-state">Chưa có đánh giá nào cho xe này.</p>';
+        document.getElementById("average-rating").textContent = "0.0";
+        document.getElementById("average-stars").textContent = "-----";
+        return;
+    }
+
+    const avg = (reviews.reduce((sum, r) => sum + r.so_sao_danh_gia, 0) / total).toFixed(1);
+    document.getElementById("average-rating").textContent = avg;
+    document.getElementById("average-stars").textContent = "★".repeat(Math.round(avg));
+
+    list.innerHTML = reviews.map(r => {
+        const stars = "★".repeat(r.so_sao_danh_gia);
+        const customer = r.id_khach_hang || {};
+        const name = customer.ho_ten || customer.email || "Khách hàng";
+        const date = r.ngay_danh_gia ? new Date(r.ngay_danh_gia).toLocaleDateString('vi-VN') : '';
+        
+        return `
+            <div class="comment-card">
+                <div class="comment-header">
+                    <p class="user-name">${name}</p>
+                    <span class="comment-stars">${stars}</span>
+                </div>
+                <p class="comment-text">${r.noi_dung_binh_luan || ''}</p>
+                <small style="color: var(--text-muted);">${date}</small>
+            </div>
+        `;
+    }).join('');
+}
+
+async function submitReview() {
+    const bikeId = document.getElementById("bikeSelect").value;
+    const rating = document.querySelector('input[name="rating"]:checked')?.value;
+    const content = document.getElementById("reviewContent").value.trim();
+
+    if (!bikeId) {
+        alert("⚠️ Vui lòng chọn xe cần đánh giá!");
+        return;
+    }
+
+    if (!rating) {
+        alert("⚠️ Vui lòng chọn số sao đánh giá!");
+        return;
+    }
+
+    const res = await apiFetch("/reviews", {
+        method: "POST",
+        body: {
+            id_xe: bikeId,
+            so_sao_danh_gia: parseInt(rating),
+            noi_dung_binh_luan: content
+        }
+    });
+
+    if (res.success) {
+        alert("✅ " + res.message);
+        document.getElementById("reviewContent").value = "";
+        document.querySelectorAll('input[name="rating"]').forEach(i => i.checked = false);
+        loadCompletedRentals();
+    } else {
+        alert("❌ " + res.message);
+    }
+}
+
+document.getElementById("bikeSelect").addEventListener("change", loadReviews);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Xe - E-BIKES</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --primary-orange-hover: #ff6b35;
+            --bg-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(226, 232, 240, 0.8);
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #f4f7fa; 
+            margin: 0; 
+            color: #1e293b; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .navbar { 
+            background: rgba(15, 23, 42, 0.95); 
+            backdrop-filter: blur(10px);
+            color: white; 
+            padding: 15px 6%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--primary-orange);
+        }
+
+        .nav-links a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            margin: 0 15px; 
+            font-size: 14px; 
+            font-weight: 600;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+        }
+        
+        .nav-links a.active {
+            position: relative;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-orange);
+            border-radius: 2px;
+        }
+        
+        .user-menu { position: relative; }
+
+        .user-dropdown-btn {
+            font-weight: 600;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-family: inherit;
+        }
+
+        .user-dropdown-btn:hover { background: rgba(255, 255, 255, 0.18); }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #ffffff;
+            color: #1e293b;
+            min-width: 220px;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+            z-index: 1050;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dropdown-menu.show { display: block; }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f1f5f9;
+            color: var(--primary-orange);
+        }
+
+        .dropdown-menu .logout-item {
+            color: #dc2626;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .dropdown-menu .logout-item:hover {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+        
+        .container { max-width: 1200px; margin: 40px auto; display: flex; gap: 30px; padding: 0 20px; }
+        
+        .sidebar { 
+            width: 300px; 
+            background: white; 
+            padding: 28px 24px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            height: fit-content; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+        }
+        
+        .filter-title { 
+            font-weight: 800; 
+            font-size: 15px;
+            color: var(--bg-dark);
+            border-bottom: 3px solid var(--primary-orange); 
+            padding-bottom: 6px; 
+            display: inline-block; 
+            margin-bottom: 25px; 
+        }
+        
+        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        .filter-group:last-of-type { border-bottom: none; padding-bottom: 0; }
+        
+        .filter-label { font-size: 12px; font-weight: 700; color: var(--bg-dark); margin-bottom: 12px; display: block; letter-spacing: 0.5px; }
+        
+        input[type="text"], select { 
+            width: 100%; 
+            padding: 12px 14px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 10px; 
+            font-family: inherit;
+            font-size: 14px;
+            background: #f8fafc;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.15);
+        }
+        
+        .checkbox-item { font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; color: #334155; font-weight: 500; cursor: pointer; }
+        .checkbox-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary-orange); cursor: pointer; }
+        
+        input[type="range"] { accent-color: var(--primary-orange); margin-top: 10px; cursor: pointer; }
+        
+        .btn-apply { 
+            width: 100%; 
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ff6b35 100%); 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 14px;
+            cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+        
+        .btn-apply:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
+        }
+        
+        .main-content { flex: 1; }
+        
+        .grid-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-bottom: 25px; 
+            font-size: 14px; 
+            font-weight: 600;
+            background: white; 
+            padding: 16px 24px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+        
+        .grid-header select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--bg-dark);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .bike-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 25px; }
+        
+        .bike-card { 
+            background: white; 
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            padding: 20px; 
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            cursor: pointer;
+        }
+        
+        .bike-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+            border-color: rgba(255, 69, 0, 0.2);
+        }
+        
+        .badge { 
+            background: var(--bg-dark); 
+            color: white; 
+            padding: 5px 12px; 
+            font-size: 11px; 
+            font-weight: 700;
+            border-radius: 50px; 
+            display: inline-block; 
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+        
+        .bike-img { 
+            width: 100%; 
+            height: 160px; 
+            margin: 15px 0 10px 0; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .bike-img img { 
+            max-width: 90%; 
+            max-height: 90%; 
+            object-fit: contain; 
+        }
+        
+        .bike-card h4 {
+            margin: 10px 0 6px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--bg-dark);
+        }
+        
+        .bike-card p {
+            font-size: 12px; 
+            color: var(--text-muted);
+            margin: 0 0 12px 0;
+            font-weight: 500;
+        }
+        
+        .price-section {
+            border-top: 1px solid #f1f5f9; 
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .price-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .price { font-weight: 800; font-size: 18px; color: var(--primary-orange); }
+        
+        .btn-rent { 
+            background: var(--bg-dark); 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 13px;
+        }
+        
+        .btn-rent:hover {
+            background: var(--primary-orange);
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="logo">E-<span>BIKES</span></a>
+    <div class="nav-links">
+        <a href="home.html">Trang Chủ</a> 
+        <a href="bikes.html" class="active">Danh Sách Xe</a> 
+        <a href="booking-history.html">📋 Lịch sử đặt xe</a>
+        <a href="#">Liên Hệ</a>
+    </div>
+    <div class="user-menu">
+        <button class="user-dropdown-btn" id="userDropdownBtn">
+            👤 <span id="userDisplayName">Khách Hàng</span> ▾
+        </button>
+            <div class="dropdown-menu" id="userDropdown">
+                <a href="#" class="logout-item" id="btnLogout">🚪 Đăng xuất</a>
+            </div>
+    </div>
+</nav>
+
+<div class="container">
+    <aside class="sidebar">
+        <span class="filter-title">BỘ LỌC TÌM KIẾM</span>
+        <div class="filter-group">
+            <label class="filter-label">LOẠI XE</label>
+            <select id="filterType">
+                <option value="">Tất cả loại xe</option>
+                <option value="Xe số">Xe số</option>
+                <option value="Xe tay ga">Xe tay ga</option>
+                <option value="Xe côn tay">Xe côn tay</option>
+                <option value="Xe điện">Xe điện</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label class="filter-label">TRẠNG THÁI</label>
+            <select id="filterStatus">
+                <option value="">Tất cả trạng thái</option>
+                <option value="available">Sẵn sàng</option>
+                <option value="rented">Đang cho thuê</option>
+                <option value="maintenance">Bảo trì</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label class="filter-label">GIÁ THUÊ (VNĐ / NGÀY)</label>
+            <input type="number" id="priceMin" placeholder="Giá tối thiểu" style="margin-bottom: 10px;">
+            <input type="number" id="priceMax" placeholder="Giá tối đa">
+        </div>
+        
+        <button class="btn-apply" onclick="applyFilters()">ÁP DỤNG BỘ LỌC</button>
+    </aside>
+
+    <main class="main-content">
+        <div class="grid-header">
+            <span id="resultCount">Đang tải...</span>
+            <span>Sắp xếp theo: 
+                <select id="sortBy" onchange="loadBikes()">
+                    <option value="price-asc">Giá: Thấp đến Cao</option>
+                    <option value="price-desc">Giá: Cao đến Thấp</option>
+                    <option value="name">Tên xe A-Z</option>
+                </select>
+            </span>
+        </div>
+
+        <div class="bike-grid" id="bikeGrid">
+            <p style="padding: 20px; color: #64748b;">⏳ Đang tải danh sách xe...</p>
+        </div>
+    </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+(function() {
+    if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('role', 'customer');
+        localStorage.setItem('token', 'mock_token_123456');
+        localStorage.setItem('user', JSON.stringify({ ho_ten: 'Bich Dao', email: 'bichdaon639@gmail.com' }));
+    }
+
+    const userBtn = document.getElementById("userDropdownBtn");
+    const dropdown = document.getElementById("userDropdown");
+    const displayName = document.getElementById("userDisplayName");
+    const btnLogout = document.getElementById("btnLogout");
+
+    const userString = localStorage.getItem("user");
+    if (userString) {
+        try {
+            const userData = JSON.parse(userString);
+            const name = userData.ho_ten || userData.email || "Khách Hàng";
+            if (displayName) displayName.textContent = name;
+        } catch (e) { console.error(e); }
+    }
+
+    if (userBtn && dropdown) {
+        userBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle("show");
+        });
+
+        window.addEventListener("click", function(e) {
+            if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+    }
+
+    if (btnLogout) {
+        btnLogout.addEventListener("click", function(e) {
+            e.preventDefault();
+            if (confirm("Bạn muốn đăng xuất khỏi hệ thống?")) {
+                localStorage.clear();
+                window.location.href = "../auth/login.html";
+            }
+        });
+    }
+
+    loadBikes();
+})();
+
+async function loadBikes() {
+    const grid = document.getElementById("bikeGrid");
+    const countEl = document.getElementById("resultCount");
+    
+    let filters = {};
+    const type = document.getElementById("filterType").value;
+    const status = document.getElementById("filterStatus").value;
+    const priceMin = document.getElementById("priceMin").value;
+    const priceMax = document.getElementById("priceMax").value;
+    
+    if (type) filters.loai_xe = type;
+    if (status) filters.trang_thai_xe = status;
+    if (priceMin) filters.gia_min = priceMin;
+    if (priceMax) filters.gia_max = priceMax;
+    
+    const res = await apiFetch('/bikes', { method: 'GET' });
+    
+    if (!res.success) {
+        grid.innerHTML = '<p style="color: #dc2626; padding: 20px;">❌ ' + (res.message || 'Không thể tải danh sách xe') + '</p>';
+        return;
+    }
+
+    let bikes = res.data || [];
+    
+    const sortBy = document.getElementById("sortBy").value;
+    if (sortBy === 'price-asc') {
+        bikes.sort((a, b) => a.gia_thue_theo_ngay - b.gia_thue_theo_ngay);
+    } else if (sortBy === 'price-desc') {
+        bikes.sort((a, b) => b.gia_thue_theo_ngay - a.gia_thue_theo_ngay);
+    } else if (sortBy === 'name') {
+        bikes.sort((a, b) => (a.ten_xe || '').localeCompare(b.ten_xe || ''));
+    }
+    
+    countEl.textContent = `Tìm thấy ${bikes.length} xe phù hợp`;
+    
+    if (bikes.length === 0) {
+        grid.innerHTML = '<p style="padding: 40px; text-align: center; color: #64748b;">Không có xe nào phù hợp với bộ lọc.</p>';
+        return;
+    }
+
+    const serverUrl = "http://localhost:5000";
+    grid.innerHTML = bikes.map(bike => {
+        const imgUrl = bike.duong_dan_anh 
+            ? (bike.duong_dan_anh.startsWith('http') ? bike.duong_dan_anh : `${serverUrl}${bike.duong_dan_anh}`)
+            : 'https://via.placeholder.com/250x160?text=No+Image';
+        
+        return `
+            <div class="bike-card" onclick="viewBikeDetail('${bike._id}')">
+                <div class="badge">${bike.loai_xe || 'Xe máy'}</div>
+                <div class="bike-img">
+                    <img src="${imgUrl}" alt="${bike.ten_xe}">
+                </div>
+                <h4>${bike.ten_xe}</h4>
+                <p>Biển số: ${bike.bien_so_xe} • ${bike.mo_ta_chi_tiet ? bike.mo_ta_chi_tiet.substring(0, 50) + '...' : ''}</p>
+                
+                <div class="price-section">
+                    <div class="price-box">
+                        <span class="price-label">Giá thuê 1 ngày</span>
+                        <span class="price">${bike.gia_thue_theo_ngay.toLocaleString('vi-VN')}đ</span>
+                    </div>
+                    <button class="btn-rent">Xem Chi Tiết</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function applyFilters() {
+    loadBikes();
+}
+
+function viewBikeDetail(bikeId) {
+    window.location.href = `bike-detail.html?id=${bikeId}`;
+}
+</script>
+
+</body>
+</html>

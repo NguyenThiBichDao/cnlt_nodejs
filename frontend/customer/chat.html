@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Hỗ Trợ - Khách Hàng</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --bg-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f4f7fa;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 15px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--primary-orange); }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; }
+
+        .user-menu { position: relative; }
+        .user-dropdown-btn {
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-family: inherit;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            color: #1e293b;
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 1001;
+        }
+
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a:hover { background: #f1f5f9; color: var(--primary-orange); }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 140px);
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .chat-header h1 {
+            margin: 0;
+            font-size: 22px;
+            color: var(--bg-dark);
+        }
+
+        .chat-header p {
+            margin: 5px 0 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .chat-bubble.self {
+            align-self: flex-end;
+            background: var(--primary-orange);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.other {
+            align-self: flex-start;
+            background: #f1f5f9;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-bubble .time {
+            display: block;
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .chat-footer {
+            padding: 16px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-footer textarea {
+            flex: 1;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+        }
+
+        .chat-footer button {
+            background: var(--primary-orange);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0 24px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chat-footer button:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="logo">E-<span>BIKES</span></a>
+    <div class="nav-links">
+        <a href="home.html">Trang Chủ</a>
+        <a href="bikes.html">Danh Sách Xe</a>
+        <a href="chat.html" class="active">Chat Hỗ Trợ</a>
+    </div>
+    <div class="user-menu">
+        <button class="user-dropdown-btn" id="userDropdownBtn">
+            👤 <span id="userDisplayName">Khách Hàng</span> ▾
+        </button>
+        <div class="dropdown-menu" id="userDropdown">
+            <a href="#" id="btnLogout">🚪 Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h1>Trò chuyện với Admin</h1>
+        <p>Gửi tin nhắn để được hỗ trợ nhanh chóng</p>
+    </div>
+    <div id="messageContainer" class="chat-messages"></div>
+    <div class="chat-footer">
+        <textarea id="messageInput" placeholder="Nhập tin nhắn..." rows="2"></textarea>
+        <button id="sendMessageBtn">Gửi</button>
+    </div>
+</div>
+
+<script src="http://localhost:5000/socket.io/socket.io.js"></script>
+<script src="../js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('role', 'customer');
+        localStorage.setItem('token', 'mock_token_123456');
+        localStorage.setItem('user', JSON.stringify({ ho_ten: 'Bich Dao', email: 'bichdaon639@gmail.com', _id: 'user123' }));
+    }
+
+    const userBtn = document.getElementById("userDropdownBtn");
+    const dropdown = document.getElementById("userDropdown");
+    const displayName = document.getElementById("userDisplayName");
+    const btnLogout = document.getElementById("btnLogout");
+
+    const userString = localStorage.getItem("user");
+    if (userString) {
+        try {
+            const userData = JSON.parse(userString);
+            const name = userData.ho_ten || userData.email || "Khách Hàng";
+            if (displayName) displayName.textContent = name;
+        } catch (e) {}
+    }
+
+    if (userBtn && dropdown) {
+        userBtn.addEventListener("click", e => {
+            e.stopPropagation();
+            dropdown.classList.toggle("show");
+        });
+        window.addEventListener("click", e => {
+            if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+    }
+
+    if (btnLogout) {
+        btnLogout.addEventListener("click", e => {
+            e.preventDefault();
+            if (confirm("Bạn muốn đăng xuất?")) {
+                localStorage.clear();
+                window.location.href = "../auth/login.html";
+            }
+        });
+    }
+});
+</script>
+<script src="../js/customer-chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ Sơ Cá Nhân - Admin</title>
+    <script src="../js/check-auth.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="sidebarMenu"></aside>
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>CẤU HÌNH TÀI KHOẢN QUẢN TRỊ</h1>
+                <p>Cập nhật thông tin định danh và mật khẩu bảo mật mã hóa</p>
+            </header>
+            <div style="background: var(--bg-card); padding:30px; border: 1px solid var(--border-color); max-width:600px;">
+                <form id="adminProfileForm">
+                    <div class="form-group"><label>Họ và Tên</label><input type="text" id="prof_name" class="cyber-input"></div>
+                    <div class="form-group"><label>Email Hệ Thống</label><input type="email" id="prof_email" disabled class="cyber-input"></div>
+                    <div class="form-group"><label>Mật Khẩu Mới</label><input type="password" id="prof_pass" class="cyber-input"></div>
+                    <button type="submit" class="btn-action primary" style="width:100%; margin-top:20px;">CẬP NHẬT THÔNG TIN</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="../js/api.js"></script><script src="../js/sidebar-loader.js"></script><script src="../js/admin-profile.js"></script>
+</body>
+</html>

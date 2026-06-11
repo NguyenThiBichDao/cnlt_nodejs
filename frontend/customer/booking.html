@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Đặt Xe Máy Du Lịch</title>
+    <script src="../js/check-auth.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --bg-dark: #0f172a;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+        
+        * { box-sizing: border-box; }
+        body {
+            background: #f4f7fa;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            color: #1e293b;
+        }
+        
+        .booking-page-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        
+        .booking-step-title {
+            text-align: center;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+        
+        .booking-grid {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .info-summary-box, .form-details-box {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .info-summary-box h3, .form-details-box h3 {
+            margin-top: 0;
+            color: var(--bg-dark);
+            border-bottom: 2px solid var(--primary-orange);
+            padding-bottom: 8px;
+        }
+        
+        .summary-item {
+            margin-bottom: 12px;
+            font-size: 15px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 8px;
+        }
+        
+        .summary-item strong { color: #333; }
+        
+        .total-price-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff7ed;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #c2410c;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        
+        .btn-submit-booking {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ff6b35 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .bike-img-preview {
+            width: 100%;
+            height: 120px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .bike-img-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-page-container">
+        <h2 class="booking-step-title">🏍️ XÁC NHẬN ĐẶT THUÊ XE</h2>
+        
+        <div class="booking-grid">
+            <div class="info-summary-box">
+                <h3>Thông tin thuê xe</h3>
+                <div id="bikeSummaryLoading" style="text-align: center; color: #888; padding: 20px;">⏳ Đang tải...</div>
+                
+                <div id="bikeSummaryContent" style="display: none;">
+                    <div class="bike-img-preview" id="bikeImgPreview"></div>
+                    <div class="summary-item"><strong>Xe máy chọn:</strong> <span id="summary_bike_name">-</span></div>
+                    <div class="summary-item"><strong>Biển số xe:</strong> <span id="summary_bike_plate">-</span></div>
+                    <div class="summary-item"><strong>Giá thuê gốc:</strong> <span id="summary_bike_price">0</span> đ/ngày</div>
+                    <div class="summary-item"><strong>Ngày nhận xe:</strong> <span id="summary_start_date">-</span></div>
+                    <div class="summary-item"><strong>Ngày trả xe:</strong> <span id="summary_end_date">-</span></div>
+                    <div class="summary-item"><strong>Tổng số ngày thuê:</strong> <span id="summary_total_days">0</span> ngày</div>
+                    
+                    <div class="total-price-box">
+                        TỔNG TIỀN: <span id="summary_total_money">0</span> đ
+                    </div>
+                    <p style="font-size: 12px; color: #777; margin-top: 10px;">
+                        * Lưu ý: Giá trên chưa bao gồm tiền cọc xe. Quý khách sẽ làm hợp đồng khi nhận xe.
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-details-box">
+                <h3>Thông tin giao nhận</h3>
+                
+                <form id="finalBookingForm">
+                    <div class="form-group">
+                        <label for="cccd">Số Căn cước công dân (CCCD) *</label>
+                        <input type="text" id="cccd" placeholder="Nhập 12 số CCCD..." required pattern="[0-9]{12}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pickup_type">Địa điểm nhận xe *</label>
+                        <select id="pickup_type" onchange="toggleLocationInput()" required>
+                            <option value="Cửa hàng">Nhận trực tiếp tại Cửa hàng</option>
+                            <option value="Sân bay">Giao tận Sân bay</option>
+                            <option value="Khách sạn">Giao tận Khách sạn/Homestay</option>
+                            <option value="Bến xe">Giao tận Bến xe/Ga tàu</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="detailLocationGroup" style="display: none;">
+                        <label for="pickup_location">Địa điểm chi tiết *</label>
+                        <input type="text" id="pickup_location" placeholder="Tên khách sạn, mã bay..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking_notes">Ghi chú (Nếu có)</label>
+                        <input type="text" id="booking_notes" placeholder="Ví dụ: Cần thêm mũ bảo hiểm size lớn...">
+                    </div>
+
+                    <button type="submit" class="btn-submit-booking">XÁC NHẬN ĐẶT XE NGAY</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        let bikePricePerDay = 0;
+        let totalDays = 1;
+        let bikeId = null;
+        let bikeData = null;
+
+        function toggleLocationInput() {
+            const pickupType = document.getElementById("pickup_type").value;
+            const locationGroup = document.getElementById("detailLocationGroup");
+            const locationInput = document.getElementById("pickup_location");
+            
+            if (pickupType === "Cửa hàng") {
+                locationGroup.style.display = "none";
+                locationInput.required = false;
+                locationInput.value = "";
+            } else {
+                locationGroup.style.display = "block";
+                locationInput.required = true;
+            }
+        }
+
+        function calculateDays(start, end) {
+            const s = new Date(start);
+            const e = new Date(end);
+            const diff = e.getTime() - s.getTime();
+            let days = Math.ceil(diff / (1000 * 3600 * 24));
+            return days > 0 ? days : 1;
+        }
+
+        async function loadBikeInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            bikeId = urlParams.get("id");
+            const startDate = urlParams.get("start");
+            const endDate = urlParams.get("end");
+
+            if (!bikeId || !startDate || !endDate) {
+                alert("❌ Thiếu thông tin. Vui lòng chọn xe từ trang danh sách!");
+                window.location.href = "bikes.html";
+                return;
+            }
+
+            try {
+                const res = await apiFetch(`/bikes/${bikeId}`);
+                if (res.success && res.data) {
+                    bikeData = res.data;
+                    bikePricePerDay = bikeData.gia_thue_theo_ngay;
+                    totalDays = calculateDays(startDate, endDate);
+
+                    document.getElementById("summary_bike_name").innerText = bikeData.ten_xe;
+                    document.getElementById("summary_bike_plate").innerText = bikeData.bien_so_xe;
+                    document.getElementById("summary_bike_price").innerText = bikePricePerDay.toLocaleString('vi-VN');
+                    document.getElementById("summary_start_date").innerText = startDate;
+                    document.getElementById("summary_end_date").innerText = endDate;
+                    document.getElementById("summary_total_days").innerText = totalDays;
+                    document.getElementById("summary_total_money").innerText = (bikePricePerDay * totalDays).toLocaleString('vi-VN');
+
+                    const serverUrl = "http://localhost:5000";
+                    const imgContainer = document.getElementById("bikeImgPreview");
+                    if (bikeData.duong_dan_anh) {
+                        const imgUrl = bikeData.duong_dan_anh.startsWith('http') ? bikeData.duong_dan_anh : `${serverUrl}${bikeData.duong_dan_anh}`;
+                        imgContainer.innerHTML = `<img src="${imgUrl}" alt="${bikeData.ten_xe}">`;
+                    }
+
+                    document.getElementById("bikeSummaryLoading").style.display = "none";
+                    document.getElementById("bikeSummaryContent").style.display = "block";
+                }
+            } catch (error) {
+                alert("❌ Lỗi tải thông tin xe!");
+            }
+        }
+
+        async function submitBooking(e) {
+            e.preventDefault();
+            
+            const token = localStorage.getItem("token");
+            if (!token || token === "mock_token_123456") {
+                alert("⚠️ Vui lòng đăng nhập để đặt xe!");
+                window.location.href = "../auth/login.html";
+                return;
+            }
+
+            const pickupType = document.getElementById("pickup_type").value;
+            const detailLocation = document.getElementById("pickup_location").value;
+            const finalLocation = pickupType === "Cửa hàng" ? "Nhận tại cửa hàng" : `${pickupType}: ${detailLocation}`;
+
+            const bookingData = {
+                id_xe: bikeId,
+                ngay_bat_dau: document.getElementById("summary_start_date").innerText,
+                ngay_du_kien_tra: document.getElementById("summary_end_date").innerText,
+                so_cccd: document.getElementById("cccd").value,
+                dia_diem_nhan: finalLocation,
+                ghi_chu: document.getElementById("booking_notes").value,
+                tong_tien_thue: bikePricePerDay * totalDays
+            };
+
+            try {
+                const res = await apiFetch("/rentals", {
+                    method: "POST",
+                    body: bookingData
+                });
+
+                if (res.success) {
+                    alert("🎉 Đặt xe thành công! Đơn hàng của bạn đang chờ duyệt.");
+                    window.location.href = "booking-history.html";
+                } else {
+                    alert("❌ " + (res.message || "Đặt xe thất bại"));
+                }
+            } catch (error) {
+                alert("❌ Không kết nối được server!");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadBikeInfo();
+            document.getElementById("finalBookingForm").addEventListener("submit", submitBooking);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EBikes Admin</title>
+    <script src="../js/check-auth.js" defer></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="sidebarMenu">
+            <div style="padding: 20px; color: white;"><h3>E-BIKES MENU</h3></div>
+        </aside>
+        
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>HỆ THỐNG TRUNG TÂM CONTROL</h1>
+                <p>Giám sát số liệu kinh doanh theo thời gian thực</p>
+            </header>
+            
+            <section class="metrics-grid">
+                <div class="metric-card"><h3>Doanh Thu</h3><p id="statsTotalRevenue" class="metric-value">0 đ</p></div>
+                <div class="metric-card"><h3>Tổng Kho Xe</h3><p id="statsTotalBikes" class="metric-value">0 xe</p></div>
+                <div class="metric-card"><h3>Đơn Thuê</h3><p id="statsTotalRentals" class="metric-value">0 đơn</p></div>
+                <div class="metric-card"><h3>Thành Viên</h3><p id="statsTotalUsers" class="metric-value">0 user</p></div>
+            </section>
+
+            <div class="admin-box" style="margin-top: 30px; background: #fff; padding: 20px; border-radius: 8px;">
+                <h3>Quản lý kho xe</h3>
+                <input type="text" id="name" placeholder="Tên xe" style="padding: 8px; margin: 5px 0;">
+                <input type="text" id="price" placeholder="Giá thuê" style="padding: 8px; margin: 5px 0;">
+                <input type="file" id="imageInput" accept="image/*" style="margin: 10px 0;">
+                <button onclick="saveBike()" style="background: #10b981; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">LƯU XE</button>
+            </div>
+
+            <table id="adminTable" style="width: 100%; margin-top: 20px; border-collapse: collapse; background: white;">
+                <thead>
+                    <tr style="background: #f3f4f6; text-align: left;">
+                        <th style="padding: 10px;">Ảnh</th>
+                        <th style="padding: 10px;">Tên xe</th>
+                        <th style="padding: 10px;">Giá</th>
+                        <th style="padding: 10px;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="bikeListAdmin"></tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar-loader.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        // Bọc toàn bộ code vào khối try-catch bảo vệ để tránh gây sập trang khi chạy
+        try {
+            // Hàm xử lý ảnh sang Base64
+            function getBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            }
+
+            // Hàm Lưu Xe
+            async function saveBike() {
+                try {
+                    const name = document.getElementById('name').value;
+                    const price = document.getElementById('price').value;
+                    const fileInput = document.getElementById('imageInput');
+                    const file = fileInput.files[0];
+
+                    if (!name || !price || !file) {
+                        alert("Vui lòng nhập đầy đủ thông tin và chọn ảnh!");
+                        return;
+                    }
+
+                    const image = await getBase64(file);
+                    let bikes = JSON.parse(localStorage.getItem('bikes')) || [];
+                    
+                    bikes.push({ name, price, image });
+                    localStorage.setItem('bikes', JSON.stringify(bikes));
+                    
+                    alert("Đã thêm xe thành công!");
+                    renderAdminTable();
+                    
+                    document.getElementById('name').value = '';
+                    document.getElementById('price').value = '';
+                    fileInput.value = '';
+                } catch (e) {
+                    console.error("Lỗi khi lưu xe: ", e);
+                }
+            }
+
+            // Hàm Xóa Xe
+            function deleteBike(index) {
+                if (confirm("Bạn có chắc chắn muốn xóa xe này?")) {
+                    let bikes = JSON.parse(localStorage.getItem('bikes')) || [];
+                    bikes.splice(index, 1);
+                    localStorage.setItem('bikes', JSON.stringify(bikes));
+                    renderAdminTable();
+                }
+            }
+
+            // Hàm hiển thị bảng dữ liệu an toàn
+            function renderAdminTable() {
+                const tbody = document.getElementById('bikeListAdmin');
+                if (!tbody) return; // Nếu chưa load kịp DOM thì bỏ qua, tránh lỗi crash
+
+                const bikes = JSON.parse(localStorage.getItem('bikes')) || [];
+                
+                tbody.innerHTML = bikes.map((bike, index) => `
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 10px;"><img src="${bike.image || ''}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
+                        <td style="padding: 10px; font-weight: bold;">${bike.name || 'Chưa rõ'}</td>
+                        <td style="padding: 10px; color: #ef4444;">${bike.price || 0} đ</td>
+                        <td style="padding: 10px;">
+                            <button onclick="deleteBike(${index})" style="background: #ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Xóa</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                // Cập nhật số liệu an toàn lên thẻ DOM
+                const totalBikesBadge = document.getElementById('statsTotalBikes');
+                if (totalBikesBadge) {
+                    totalBikesBadge.innerText = bikes.length + " xe";
+                }
+            }
+
+            // Đảm bảo cây giao diện dựng xong hoàn toàn mới thực hiện nạp dữ liệu
+            document.addEventListener("DOMContentLoaded", () => {
+                renderAdminTable();
+            });
+
+        } catch (globalError) {
+            console.error("Hệ thống phát hiện lỗi Script cục bộ: ", globalError);
+        }
+    </script>
+</body>
+</html>

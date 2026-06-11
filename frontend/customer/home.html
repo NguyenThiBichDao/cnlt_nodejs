@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-BIKES - Thuê Xe Máy Tự Lái & Phượt Du Lịch</title>
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f7fa;
+            color: #1e293b;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* SIDEBAR */
+        .site-header {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 6%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffffff;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-orange);
+            border-radius: 2px;
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-dropdown-btn {
+            font-weight: 600;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-family: inherit;
+        }
+
+        .user-dropdown-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #ffffff;
+            color: #1e293b;
+            min-width: 220px;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+            z-index: 1050;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f1f5f9;
+            color: var(--primary-orange);
+        }
+
+        .dropdown-menu .logout-item {
+            color: #dc2626;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .dropdown-menu .logout-item:hover {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        /* HEADER ADJUSTMENT */
+
+        /* HERO SECTION - ĐẬM CHẤT DU LỊCH VỚI ẢNH NỀN CUNG ĐƯỜNG */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1600&auto=format&fit=crop') no-repeat center center/cover;
+            color: #ffffff;
+            text-align: center;
+            padding: 120px 20px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+        }
+
+        .hero-section h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .hero-section h1 span {
+            color: var(--primary-orange);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-section p {
+            max-width: 700px;
+            margin: 0 auto 35px;
+            color: #e2e8f0;
+            font-size: 17px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .btn-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ff6b35 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.5);
+        }
+
+        /* FEATURES CONTAINER - KHỐI THẺ ĐA TRẢI NGHIỆM */
+        .features-container {
+            max-width: 1100px;
+            margin: -50px auto 0;
+            padding: 0 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .feature-box .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+            display: inline-block;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .feature-box h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: var(--bg-dark);
+            font-weight: 700;
+        }
+
+        .feature-box p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* BIKES SECTIONS - KHU VỰC THẺ XE HIỆN ĐẠI */
+        .page-container {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-title-wrapper {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title-wrapper span {
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-orange);
+            font-weight: 700;
+            font-size: 12px;
+            background: rgba(255, 69, 0, 0.1);
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section-title-wrapper h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--bg-dark);
+        }
+
+        /* BIKE CARDS LAYOUT */
+        .bikes-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .custom-bike-card {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .custom-bike-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            border-color: rgba(255, 69, 0, 0.2);
+        }
+
+        .bike-tag-type {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 50px;
+            z-index: 5;
+            letter-spacing: 0.5px;
+        }
+
+        /* Ảnh xe giả lập phối màu Gradient tự nhiên */
+        .bike-media-box {
+            height: 210px;
+            background: linear-gradient(135deg, #e6fffa 0%, #e2e8f0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #0f766e;
+            font-weight: 700;
+            font-size: 15px;
+            gap: 8px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .bike-media-box::before {
+            content: "🛵";
+            font-size: 40px;
+        }
+
+        .bike-details-box {
+            padding: 24px;
+            flex-grow: 1;
+        }
+
+        .bike-details-box h2 {
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            color: var(--bg-dark);
+            font-weight: 700;
+        }
+
+        .bike-info-row {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+
+
+        /* KHU VỰC ĐẶT XE & GIÁ CẢ */
+        .bike-purchase-row {
+            padding: 18px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .bike-card-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-orange);
+        }
+
+        .bike-card-price span {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .btn-submit-rent {
+            background: var(--bg-dark);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .btn-submit-rent:hover {
+            background: var(--primary-orange);
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+        }
+
+        /* SITE FOOTER */
+        .site-footer {
+            background-color: var(--bg-dark);
+            color: #94a3b8;
+            padding: 40px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 100px;
+            border-top: 4px solid var(--primary-orange);
+            font-size: 14px;
+        }
+    </style>
+    
+    <script>
+        (function() {
+            if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('role', 'customer');
+                localStorage.setItem('token', 'mock_token_123456');
+                return; 
+            }
+        })();
+    </script>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="home.html" class="logo">E-<span>BIKES</span></a>
+        <nav class="nav-links">
+            <a href="home.html" class="active">Trang Chủ</a>
+            <a href="bikes.html">Danh Sách Xe</a>
+            <a href="booking-history.html">📋 Lịch sử đặt xe</a>
+            <a href="#">Liên Hệ</a>
+        </nav>
+        <div class="user-menu">
+            <button class="user-dropdown-btn" id="userDropdownBtn">
+                👤 <span id="userDisplayName">Khách Hàng</span> ▾
+            </button>
+            <div class="dropdown-menu" id="userDropdown">
+                <a href="#" class="logout-item" id="btnLogout">🚪 Đăng xuất</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <h1>Thuê Xe Máy Tự Lái - <span>Mở Khóa Mọi Hành Trình</span></h1>
+        <p>Khám phá vùng đất mới tự do theo cách riêng của bạn. Đội xe đời mới mạnh mẽ, sẵn sàng đồng hành cùng bạn trên mọi cung đường phượt vạn dặm.</p>
+        <a href="bikes.html" class="btn-cta">BẮT ĐẦU CHUYẾN ĐI NGAY</a>
+    </section>
+
+    <section class="features-container">
+        <div class="features-grid">
+            <div class="feature-box">
+                <div class="icon">🏍️</div>
+                <h3>Xe Chất Lượng Cao</h3>
+                <p>Bảo dưỡng định kỳ nghiêm ngặt trước khi giao, đảm bảo an toàn tuyệt đối qua mọi đèo dốc.</p>
+            </div>
+            <div class="feature-box">
+                <div class="icon">🗺️</div>
+                <h3>Thủ Tục Siêu Tốc</h3>
+                <p>Nhận xe chỉ trong 5 phút với căn cước công dân. Hỗ trợ giao tận nơi tại khách sạn, sân bay.</p>
+            </div>
+            <div class="feature-box">
+                <div class="icon">🛡️</div>
+                <h3>Cứu Hộ Đường Dài 24/7</h3>
+                <p>An tâm trọn vẹn với mạng lưới liên kết cứu hộ và hỗ trợ bạn mọi lúc.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-container">
+        <div class="section-title-wrapper">
+            <span>READY TO WANDER / SẴN SÀNG LÊN ĐƯỜNG</span>
+            <h1>Những Bạn Đồng Hành Lý Tưởng</h1>
+        </div>
+
+        <div class="bikes-grid-layout">
+            <div class="custom-bike-card">
+                <span class="bike-tag-type">Xe Tay Ga Đô Thị</span>
+                
+                <div class="bike-details-box">
+                    <img src="../hinhAnh/x1.jpg" alt="Honda Vision" style="width: 100%; max-width: 220px; height: 160px; object-fit: contain; border-radius: 8px;">
+                    <h2>Honda Vision 2024</h2>
+                    <div class="bike-info-row">🔹 Biển số: 43D1-999.99 (Đời mới nhất)</div>
+                    <div class="bike-info-row">🔹 Phù hợp: Dạo phố, check-in, tiết kiệm xăng</div>
+                    <div class="bike-gps-status">🟢 Đang sẵn sàng tại bãi</div>
+                </div>
+                <div class="bike-purchase-row">
+                    <div class="bike-card-price">150.000đ<span>/ngày</span></div>
+                    <button class="btn-submit-rent" onclick="location.href='bike-detail.html'">Đặt Xe</button>
+                </div>
+            </div>
+
+            <div class="custom-bike-card">
+                <span class="bike-tag-type">Xe Số Leo Đèo</span>
+                
+                <div class="bike-details-box">
+                    <img src="../hinhAnh/x2.jpg" alt="Honda Wave Alpha" style="width: 100%; max-width: 220px; height: 160px; object-fit: contain; border-radius: 8px;">
+                    <h2>Honda Wave Alpha</h2>
+                    <div class="bike-info-row">🔹 Biển số: 43D1-555.55 (Máy cực khỏe)</div>
+                    <div class="bike-info-row">🔹 Phù hợp: Chinh phục đường đèo dốc, phượt xa</div>
+                    <div class="bike-gps-status">🟢 Đang sẵn sàng tại bãi</div>
+                </div>
+                <div class="bike-purchase-row">
+                    <div class="bike-card-price">120.000đ<span>/ngày</span></div>
+                    <button class="btn-submit-rent" onclick="location.href='bike-detail.html'">Đặt Xe</button>
+                </div>
+            </div>
+
+            <div class="custom-bike-card">
+                <span class="bike-tag-type">Xe Ga Thể Thao</span>
+                
+                <div class="bike-details-box">
+                    <img src="../hinhAnh/x3.jpg" alt="Honda Air Blade" style="width: 100%; max-width: 220px; height: 160px; object-fit: contain; border-radius: 8px;">
+                    <h2>Honda Air Blade 125</h2>
+                    <div class="bike-info-row">🔹 Biển số: 43D1-888.88 (Cốp rộng tiện ích)</div>
+                    <div class="bike-info-row">🔹 Phù hợp: Đi đường trường, chứa được nhiều đồ đạc</div>
+                    <div class="bike-gps-status">🟢 Đang sẵn sàng tại bãi</div>
+                </div>
+                <div class="bike-purchase-row">
+                    <div class="bike-card-price">180.000đ<span>/ngày</span></div>
+                    <button class="btn-submit-rent" onclick="location.href='bike-detail.html'">Đặt Xe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div><strong>E-<span>BIKES</span></strong> · Đồng hành trên mọi dặm đường du lịch.</div>
+        <div>Hỗ trợ khẩn cấp: 1900 xxxx (24/7)</div>
+    </footer>
+
+    <script>
+        (function() {
+            if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('role', 'customer');
+                localStorage.setItem('token', 'mock_token_123456');
+                localStorage.setItem('user', JSON.stringify({ ho_ten: 'Bich Dao', email: 'bichdaon639@gmail.com' }));
+            }
+
+            const userBtn = document.getElementById("userDropdownBtn");
+            const dropdown = document.getElementById("userDropdown");
+            const displayName = document.getElementById("userDisplayName");
+            const btnLogout = document.getElementById("btnLogout");
+
+            const userString = localStorage.getItem("user");
+            if (userString) {
+                try {
+                    const userData = JSON.parse(userString);
+                    const name = userData.ho_ten || userData.email || "Khách Hàng";
+                    if (displayName) displayName.textContent = name;
+                } catch (e) { console.error(e); }
+            }
+
+            if (userBtn && dropdown) {
+                userBtn.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    dropdown.classList.toggle("show");
+                });
+
+                window.addEventListener("click", function(e) {
+                    if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.remove("show");
+                    }
+                });
+            }
+
+            if (btnLogout) {
+                btnLogout.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    if (confirm("Bạn muốn đăng xuất khỏi hệ thống?")) {
+                        localStorage.clear();
+                        window.location.href = "../auth/login.html";
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

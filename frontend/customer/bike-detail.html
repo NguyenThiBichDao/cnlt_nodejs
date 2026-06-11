@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Xe - E-BIKES</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #ff4500;
+            --bg-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(226, 232, 240, 0.8);
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #f4f7fa; 
+            margin: 0; 
+            color: #1e293b; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .navbar { 
+            background: rgba(15, 23, 42, 0.95); 
+            backdrop-filter: blur(10px);
+            color: white; 
+            padding: 15px 6%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .logo span { color: var(--primary-orange); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a { 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 600;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-links a:hover, .nav-links a.active { color: #ffffff; }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-orange);
+            border-radius: 2px;
+        }
+
+        .user-menu { position: relative; }
+
+        .user-dropdown-btn {
+            font-weight: 600;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-family: inherit;
+        }
+
+        .user-dropdown-btn:hover { background: rgba(255, 255, 255, 0.18); }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #ffffff;
+            color: #1e293b;
+            min-width: 220px;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+            z-index: 1050;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dropdown-menu.show { display: block; }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f1f5f9;
+            color: var(--primary-orange);
+        }
+
+        .dropdown-menu .logout-item {
+            color: #dc2626;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .dropdown-menu .logout-item:hover {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+        
+        .detail-container { 
+            max-width: 1000px; 
+            margin: 50px auto; 
+            padding: 0 20px; 
+        }
+
+        .main-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 35px;
+            display: flex;
+            gap: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .media-side {
+            flex: 1.2;
+        }
+
+        .image-wrapper {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bike-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--bg-dark);
+            margin: 0 0 10px 0;
+        }
+
+        .bike-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-orange);
+            margin-bottom: 25px;
+        }
+
+        .bike-price span {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .specs-section h3 {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--bg-dark);
+            text-transform: uppercase;
+            margin: 0 0 15px 0;
+            border-left: 3px solid var(--primary-orange);
+            padding-left: 8px;
+        }
+
+        .specs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+        }
+
+        .specs-list li {
+            font-size: 14px;
+            color: #334155;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .specs-list li::before {
+            content: "⚡";
+            font-size: 12px;
+        }
+
+        .action-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-action-rent {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ff6b35 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3);
+        }
+
+        .btn-action-rent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 69, 0, 0.4);
+        }
+
+        .btn-back {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+            color: var(--bg-dark);
+        }
+
+        .loading-placeholder {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .status-available { color: #16a34a; font-weight: 600; }
+        .status-rented { color: #dc2626; font-weight: 600; }
+        .status-maintenance { color: #ca8a04; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<script>
+(function() {
+    if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('role', 'customer');
+        localStorage.setItem('token', 'mock_token_123456');
+        localStorage.setItem('user', JSON.stringify({ ho_ten: 'Bich Dao', email: 'bichdaon639@gmail.com' }));
+    }
+})();
+</script>
+
+<nav class="navbar">
+    <a href="home.html" class="logo">E-<span>BIKES</span></a>
+    <div class="nav-links">
+        <a href="home.html">Trang Chủ</a>
+        <a href="bikes.html" class="active">Danh Sách Xe</a>
+        <a href="booking-history.html">📋 Lịch sử đặt xe</a>
+    </div>
+    <div class="user-menu">
+        <button class="user-dropdown-btn" id="userDropdownBtn">
+            👤 <span id="userDisplayName">Khách Hàng</span> ▾
+        </button>
+        <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="logout-item" id="btnLogout">🚪 Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="detail-container" id="bikeDetailContainer">
+    <div class="loading-placeholder">
+        <p>⏳ Đang tải thông tin xe...</p>
+    </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+(function() {
+    const userBtn = document.getElementById("userDropdownBtn");
+    const dropdown = document.getElementById("userDropdown");
+    const displayName = document.getElementById("userDisplayName");
+    const btnLogout = document.getElementById("btnLogout");
+
+    const userString = localStorage.getItem("user");
+    if (userString) {
+        try {
+            const userData = JSON.parse(userString);
+            const name = userData.ho_ten || userData.email || "Khách Hàng";
+            if (displayName) displayName.textContent = name;
+        } catch (e) { console.error(e); }
+    }
+
+    if (userBtn && dropdown) {
+        userBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle("show");
+        });
+        window.addEventListener("click", function(e) {
+            if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+    }
+
+    if (btnLogout) {
+        btnLogout.addEventListener("click", function(e) {
+            e.preventDefault();
+            if (confirm("Bạn muốn đăng xuất khỏi hệ thống?")) {
+                localStorage.clear();
+                window.location.href = "../auth/login.html";
+            }
+        });
+    }
+})();
+
+async function loadBikeDetail() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bikeId = urlParams.get("id");
+    const container = document.getElementById("bikeDetailContainer");
+    
+    if (!bikeId) {
+        container.innerHTML = '<p style="color: #dc2626; text-align: center;">❌ Không tìm thấy ID xe!</p>';
+        return;
+    }
+    
+    const res = await apiFetch(`/bikes/${bikeId}`);
+    
+    if (!res.success || !res.data) {
+        container.innerHTML = '<p style="color: #dc2626; text-align: center;">❌ Không thể tải thông tin chiếc xe máy này!</p>';
+        return;
+    }
+    
+    const bike = res.data;
+    const serverUrl = "http://localhost:5000";
+    const imgUrl = bike.duong_dan_anh 
+        ? (bike.duong_dan_anh.startsWith('http') ? bike.duong_dan_anh : `${serverUrl}${bike.duong_dan_anh}`)
+        : 'https://via.placeholder.com/800x400?text=No+Image';
+    
+    const statusClass = bike.trang_thai_xe === 'available' ? 'status-available' : 
+                        bike.trang_thai_xe === 'rented' ? 'status-rented' : 'status-maintenance';
+    const statusText = bike.trang_thai_xe === 'available' ? 'Sẵn sàng cho thuê' :
+                        bike.trang_thai_xe === 'rented' ? 'Đang được thuê' : 'Đang bảo trì';
+    
+    container.innerHTML = `
+        <div class="main-card">
+            <div class="media-side">
+                <div class="image-wrapper">
+                    <img src="${imgUrl}" alt="${bike.ten_xe}">
+                </div>
+            </div>
+
+            <div class="content-side">
+                <div>
+                    <h1 class="bike-title">${bike.ten_xe}</h1>
+                    <div class="bike-price">${bike.gia_thue_theo_ngay.toLocaleString('vi-VN')} VND <span>/ Ngày</span></div>
+
+                    <div class="specs-section">
+                        <h3>Thông Số Kỹ Thuật</h3>
+                        <ul class="specs-list">
+                            <li>Loại xe: <strong>${bike.loai_xe || 'Xe máy du lịch'}</strong></li>
+                            <li>Biển số: <strong>${bike.bien_so_xe}</strong></li>
+                            <li>Trạng thái: <strong class="${statusClass}">${statusText}</strong></li>
+                            ${bike.mo_ta_chi_tiet ? `<li>Mô tả: <strong>${bike.mo_ta_chi_tiet}</strong></li>` : ''}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="action-box">
+                    ${bike.trang_thai_xe === 'available' ? `
+                        <button class="btn-action-rent" onclick="rentBike('${bike._id}')">TIẾN HÀNH THUÊ XE NGAY</button>
+                    ` : `
+                        <button class="btn-action-rent" disabled style="opacity: 0.5; cursor: not-allowed;">XE HIỆN KHÔNG SẴN SÀNG</button>
+                    `}
+                    <button class="btn-back" onclick="history.back()">← QUAY LẠI DANH SÁCH</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+async function rentBike(bikeId) {
+    const token = localStorage.getItem("token");
+    if (!token || token === "mock_token_123456") {
+        alert("Vui lòng đăng nhập để đặt xe!");
+        window.location.href = "../auth/login.html";
+        return;
+    }
+    
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    
+    try {
+        const res = await apiFetch("/rentals", {
+            method: "POST",
+            body: {
+                id_xe: bikeId,
+                ngay_bat_dau: today,
+                ngay_du_kien_tra: tomorrow,
+                tong_tien_thue: 0
+            }
+        });
+        
+        if (res.success) {
+            alert("🎉 Đặt thuê xe thành công! Chúng tôi sẽ liên hệ xác nhận sớm.");
+            window.location.href = "booking-history.html";
+        } else {
+            alert("❌ " + (res.message || "Đặt xe thất bại. Vui lòng thử lại."));
+        }
+    } catch (err) {
+        console.error(err);
+        alert("❌ Không thể kết nối máy chủ.");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadBikeDetail);
+</script>
+
+</body>
+</html>

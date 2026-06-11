@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - E-Bikes Rental</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            /* Đổi nền thành hình ảnh du lịch phượt bằng xe máy */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://unsplash.com') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+    width: 420px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    
+    /* CHÈN HOẶC SỬA 2 DÒNG DƯỚI ĐÂY ĐỂ ĐẨY FORM LÊN TRÊN */
+    position: relative;
+    z-index: 9999; 
+}
+        .brand-title {
+            text-align: center;
+            color: #e65100; /* Màu cam du lịch bụi */
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .brand-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 22px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #e65100;
+            box-shadow: 0 0 5px rgba(230, 81, 0, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: #e65100; /* Thay màu xanh bằng màu cam năng động */
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #bf4300;
+        }
+        .redirect-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .redirect-link a {
+            color: #e65100;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .redirect-link a:hover {
+            text-decoration: underline;
+            color: #bf4300;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="brand-title">E-Bikes Rental</div>
+        <div class="brand-subtitle">Mở khóa mọi hành trình du lịch của bạn</div>
+        
+        <h2>Đăng nhập hệ thống</h2>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Email đăng nhập</label>
+                <input type="email" id="email" placeholder="VD: nguyenvan@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="password" placeholder="Nhập mật khẩu" required>
+            </div>
+            <button type="submit">Bắt đầu chuyến đi ngay</button>
+        </form>
+
+        <!-- Phần xử lý lỗi không liên kết được form đăng ký của bạn -->
+        <div class="redirect-link">
+            Chưa có tài khoản phượt? <a href="register.html">Đăng ký thành viên</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            if (!loginForm) {
+                console.error("Không tìm thấy form loginForm");
+                return;
+            }
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                try {
+                    const response = await fetch('http://localhost:5000/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await response.json();
+                    if (response.ok && data.success) {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('role', data.role);
+                        localStorage.setItem('user', JSON.stringify({ email, vai_tro: data.role }));
+                        alert('🎉 Đăng nhập thành công! Chúc bạn có chuyến du lịch vui vẻ!');
+                        if (data.role === 'admin') {
+                            window.location.href = '../admin/dashboard.html';
+                        } else {
+                            window.location.href = '../customer/home.html';
+                        }
+                    } else {
+                        alert('❌ ' + (data.message || 'Thông tin đăng nhập không chính xác'));
+                    }
+                } catch(error) {
+                    console.error(error);
+                    alert('❌ Không thể kết nối đến máy chủ lưu trữ!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

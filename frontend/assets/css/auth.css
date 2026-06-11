@@ -1,0 +1,10 @@
+:root {
+    --bg-navy: #0f172a;
+    --primary-orange: #ff4500;
+}
+body { background-color: var(--bg-navy); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.auth-box { background: white; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+.form-group { text-align: left; margin-bottom: 15px; }
+.form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+.btn-submit { width: 100%; padding: 12px; background: var(--primary-orange); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.footer-link { margin-top: 15px; font-size: 13px; }

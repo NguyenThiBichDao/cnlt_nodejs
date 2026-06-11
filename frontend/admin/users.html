@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Người Dùng - Admin</title>
+    <script src="../js/check-auth.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="sidebarMenu"></aside>
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>DANH SÁCH TÀI KHOẢN HỆ THỐNG</h1>
+                <p>Phân cấp, khóa hoặc mở khóa quyền truy cập của User và Nhân viên</p>
+            </header>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead><tr><th>Tên Thành Viên</th><th>Email</th><th>Số Điện Thoại</th><th>Vai Trò</th><th>Thao Tác</th></tr></thead>
+                    <tbody id="userTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="../js/api.js"></script><script src="../js/sidebar-loader.js"></script><script src="../js/admin-users.js"></script>
+</body>
+</html>

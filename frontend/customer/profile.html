@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Của Tôi - EBikes</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body style="padding: 40px;">
+    <div style="max-width: 700px; margin: 0 auto; background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border-color);">
+        <h2 style="color: var(--text-main); margin-bottom: 25px;">USER_PROFILE / THÔNG TIN ĐỊNH DANH</h2>
+        
+        <form style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <label style="display:block; color: var(--text-muted); margin-bottom: 5px; font-size: 13px;">Họ và Tên</label>
+                    <input type="text" value="Nguyễn Văn A" style="width:100%; padding: 12px; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+                </div>
+                <div style="flex: 1;">
+                    <label style="display:block; color: var(--text-muted); margin-bottom: 5px; font-size: 13px;">Số Điện Thoại</label>
+                    <input type="text" value="0987654321" style="width:100%; padding: 12px; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+                </div>
+            </div>
+            <div>
+                <label style="display:block; color: var(--text-muted); margin-bottom: 5px; font-size: 13px;">Email Đăng Ký</label>
+                <input type="email" value="customer@ebikes.com" disabled style="width:100%; padding: 12px; background: #e2e8f0; border: 1px solid var(--border-color); color: #94a3b8; border-radius: var(--radius); cursor: not-allowed;">
+            </div>
+            <div>
+                <label style="display:block; color: var(--text-muted); margin-bottom: 5px; font-size: 13px;">Mật Khẩu Mới (Bỏ trống nếu không đổi)</label>
+                <input type="password" placeholder="••••••••" style="width:100%; padding: 12px; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+            </div>
+            
+            <button type="button" onclick="alert('Cập nhật thông tin thành công!')" style="background: var(--primary-lime); color: white; border: none; padding: 12px; font-weight: 700; border-radius: var(--radius); cursor: pointer; margin-top: 10px;">LƯU THAY ĐỔI CẤU HÌNH</button>
+        </form>
+    </div>
+</body>
+</html>

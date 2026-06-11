@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ Thống Thuê Xe Máy Du Lịch</title>
+</head>
+<body>
+    <p style="text-align: center; margin-top: 50px; font-family: sans-serif; color: #666;">
+        Đang tải hệ thống và điều hướng, vui lòng đợi trong giây lát...
+    </p>
+
+   <script>
+    // Kiểm tra tình trạng đăng nhập của khách du lịch hoặc admin
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role'); 
+
+    if (!token) {
+        // CHUYỂN THÀNH ĐƯỜNG DẪN TƯƠNG ĐỐI ĐỂ KHỚP VỚI LIVE SERVER:
+        window.location.href = 'auth/login.html';
+    } else {
+        // Đã đăng nhập -> Phân luồng thư mục dựa trên vai trò hệ thống
+        if (role === 'admin') {
+            window.location.href = 'admin/dashboard.html';
+        } else {
+            window.location.href = 'customer/home.html';
+        }
+    }
+</script>
+</body>
+</html>

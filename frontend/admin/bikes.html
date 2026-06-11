@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Kho Xe - Admin</title>
+    <script src="../js/check-auth.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <style>
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .image-preview {
+            margin-top: 10px;
+            max-width: 100%;
+            max-height: 150px;
+            display: none;
+            border-radius: 8px;
+        }
+        .btn-submit {
+            background: var(--primary-lime, #ff4500);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('role', 'admin');
+                localStorage.setItem('token', 'mock_token_123456');
+                localStorage.setItem('user', JSON.stringify({ ho_ten: 'Admin', email: 'admin@ebikes.vn' }));
+            }
+        })();
+    </script>
+
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="sidebarMenu"></aside>
+        <main class="admin-content">
+            <header class="content-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h1>QUẢN LÝ KHO XE MÁY</h1>
+                    <p>Cập nhật, thêm hoặc xóa phương tiện</p>
+                </div>
+                <button onclick="toggleBikeModal(false)" class="btn-action primary">➕ THÊM XE MỚI</button>
+            </header>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Ảnh</th>
+                            <th>Tên Xe</th>
+                            <th>Biển Số</th>
+                            <th>Giá Thuê/Ngày</th>
+                            <th>Trạng Thái</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminBikeTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="bikeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Thêm Xe Mới</h2>
+                <button class="modal-close" onclick="document.getElementById('bikeModal').classList.remove('show')">&times;</button>
+            </div>
+            <form id="bikeForm">
+                <input type="hidden" id="currentImageUrl">
+                <div class="form-group">
+                    <label>Tên Xe *</label>
+                    <input type="text" id="bikeName" required>
+                </div>
+                <div class="form-group">
+                    <label>Loại Xe *</label>
+                    <select id="bikeType" required>
+                        <option value="">-- Chọn loại xe --</option>
+                        <option value="Xe số">Xe số</option>
+                        <option value="Xe tay ga">Xe tay ga</option>
+                        <option value="Xe côn tay">Xe côn tay</option>
+                        <option value="Xe điện">Xe điện</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Biển số *</label>
+                    <input type="text" id="bikeLicense" required>
+                </div>
+                <div class="form-group">
+                    <label>Giá thuê/ngày (VNĐ) *</label>
+                    <input type="number" id="bikePrice" min="10000" required>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select id="bikeStatus">
+                        <option value="available">Sẵn sàng</option>
+                        <option value="rented">Đang cho thuê</option>
+                        <option value="maintenance">Bảo trì</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả chi tiết</label>
+                    <textarea id="bikeDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Hình ảnh xe</label>
+                    <input type="file" id="bikeImage" accept="image/*">
+                    <img id="imagePreview" class="image-preview" alt="Preview">
+                </div>
+                <button type="submit" class="btn-submit">Lưu Xe</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/sidebar-loader.js"></script>
+    <script src="../js/admin-bikes.js"></script>
+</body>
+</html>

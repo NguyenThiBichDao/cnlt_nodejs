@@ -1,0 +1,54 @@
+/* frontend/assets/css/style.css */
+:root {
+    /* Bảng màu chuẩn theo thiết kế */
+    --bg-main: #f8fafc;        /* Nền xám nhạt */
+    --bg-dark: #0f172a;        /* Xanh Navy siêu đậm (Header/Footer) */
+    --primary-orange: #ff4500;  /* Cam Tesla (Điểm nhấn/Nút bấm) */
+    --text-main: #0f172a;      /* Chữ chính */
+    --text-muted: #64748b;     /* Chữ phụ */
+    --border-color: #e2e8f0;   /* Viền */
+    
+    --radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* Header đồng bộ cho tất cả các trang */
+.site-header {
+    background-color: var(--bg-dark);
+    padding: 20px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo { color: #fff; font-weight: 800; font-size: 24px; text-decoration: none; }
+.logo span { color: var(--primary-orange); }
+
+.nav-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    margin-right: 30px;
+    font-weight: 600;
+}
+
+.nav-links a.active, .nav-links a:hover { color: var(--primary-orange); }
+
+/* Khối tài khoản (Avatar tròn) */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.avatar-circle {
+    width: 35px;
+    height: 35px;
+    background-color: var(--primary-orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
